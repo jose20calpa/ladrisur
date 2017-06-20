@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.admin.models import LogEntry, CHANGE, ADDITION
 from django.contrib.contenttypes.models import ContentType
 
-
+#vistas
 class VisaulizarIndex(LoginRequiredMixin, TemplateView):
     login_url = '/ladrisur/login/'
     template_name = 'includes/base.html'
