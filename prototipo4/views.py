@@ -5,6 +5,8 @@ from django.contrib.contenttypes.models import ContentType
 
 #vistas
 #vistas9
+=======
+
 class VisaulizarIndex(LoginRequiredMixin, TemplateView):
     login_url = '/ladrisur/login/'
     template_name = 'includes/base.html'
