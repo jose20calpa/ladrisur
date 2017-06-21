@@ -1,0 +1,85 @@
+{% extends "includes/base.html" %}
+{% block files_head %}
+{% include "includes/files_tables.html" %}
+{% endblock %}
+{% block content %}
+<center>
+    <h2>Detalles del Secado</h2>
+    <hr>
+</center>
+{% if msj1 %}
+<div class="alert alert-success" role="alert">{{msj1}}
+
+</div>
+
+{% else %}
+{% if secadero and lista_comb and fecha %}
+<div class="alert alert-success" role="alert">El secado se realizo el <b>{{fecha}}</b> en el Secadero <b>{{secadero}}</b>
+  <a class="btn btn-success btn-xs col-md-offset-5" href="{% url 'produccion:lis-sec'%}">
+      <span class="glyphicon glyphicon-chevron-left"></span> Volver
+  </a>
+</div>
+<div class="container-fluid col-sm-7">
+    <div class="table-responsive">
+      <h4><b>Combustibles Usados en el Secado</b></h4>
+        <table id="grid-basic" class="table w3-table-all w3-card-4">
+          <thead class="thead-inverse">
+              <th id="id-row" data-column-id="id" data-type="numeric">ID</th>
+              <th data-column-id="com" >Combustible</th>
+              <th data-column-id="can">Cantidad Usada</th>
+              <th data-column-id="commands" data-formatter="commands" data-sortable="false">Acciones</th>
+            </thead>
+            <tbody>
+                {% for registro in lista_comb %}
+                <tr>
+                  <td style="display:hidden;">
+                      {{ registro.id}}
+                  </td>
+                  <td >
+                      {{registro.id_combustible}}
+                  </td>
+                    <td >
+                        {{registro.cantidad_combustible}} {{registro.id_combustible.unidad_combustible}}
+                    </td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+{% endif %}
+{% endif %}
+<script>
+    $(document).ready(function() {
+
+
+        var grid = $("#grid-basic").bootgrid({
+            formatters: {
+                "commands": function(column, row) {
+                    return "<center>" +
+                        "<button class=\"btn btn-xs btn-danger command-delete\" data-row-id=\"" + row.id +
+                        "\"><span class=\"glyphicon glyphicon-trash\"></span></button> " +
+                        "<button  class=\"btn btn-xs btn-warning command-edit\" data-row-id=\"" + row.id + "\"><span class=\"glyphicon glyphicon-edit\"></span></button> " +
+                        "</center>";
+                }
+            }
+        }).on("loaded.rs.jquery.bootgrid", function() {
+            /* Executes after data is loaded and rendered */
+            grid.find(".command-edit").on("click", function(e) {
+                var idseccom = $(this).data("row-id");
+                var url = "{% url 'produccion:mod-sec-com' 0 %}".replace(0, idseccom);
+                location.href = url;
+            }).end().find(".command-delete").on("click", function(e) {
+                var idseccom = $(this).data("row-id");
+                var url = "{% url 'produccion:elm-sec-com' 0 %}".replace(0, idseccom);
+                location.href = url;
+            });
+        });
+    });
+</script>
+{% endblock%}
+{% block files_food %}
+
+{% endblock %}

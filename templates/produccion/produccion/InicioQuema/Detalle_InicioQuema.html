@@ -1,0 +1,100 @@
+{% extends "includes/base.html" %}
+{% block files_head %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+{% include "includes/files_tables.html" %}
+{% endblock %}
+{% block content %}
+<center>
+    <h2>Detalles de la Quema Iniciadas</h2>
+    <hr>
+</center>
+{% if horno and lista_prod and fecha_inicio and hora_inicio %}
+
+<div class="alert alert-success" role="alert">La quema se inició el <b>{{fecha_inicio}}</b> a las <b>{{hora_inicio}}</b> en el Horno: <b>{{horno}} </b>
+    <a class="btn btn-warning btn-xs col-xs-offset-1 col-md-offset-3" href="{% url 'produccion:lis-quem'%}">
+        <span class="glyphicon glyphicon-edit"></span> Modificar Fecha y Hora
+    </a>
+    <a class="btn btn-success btn-xs" href="{% url 'produccion:lis-quem'%}">
+        <span class="glyphicon glyphicon-chevron-left"></span> Volver
+    </a>
+
+</div>
+
+<div class="container-fluid">
+    <div class="table-responsive">
+        <h3><b>PRODUCTOS</b></h3>
+        <table id="grid-basic" class="table w3-table-all w3-card-4">
+
+            <thead class="thead-inverse">
+                <th id="id-row" data-column-id="id" data-type="numeric">ID</th>
+                <th data-column-id="pro">Producto</th>
+                <th data-column-id="can_hor">Cantidad en horno</th>
+                <th data-column-id="commands" data-formatter="commands" data-sortable="false">Acciones</th>
+
+            </thead>
+            <tbody>
+                {% for producto in lista_prod %}
+                <tr>
+                    <td>
+                        {{producto.id}}
+                    </td>
+                    <td>
+
+                        {{producto.id_producto}}
+                    </td>
+                    <td>
+                        {{producto.cantidad_verde}}
+                    </td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+{% else %}
+<h1>no hay</h1> {% endif %}
+<script>
+    $(document).ready(function() {
+
+
+        var grid = $("#grid-basic").bootgrid({
+            labels: {
+                noResults: "No se hay Registros en el Sistema",
+                search: "Buscar",
+
+
+            },
+            formatters: {
+                "commands": function(column, row) {
+                    return "<center>" +
+                        "<button  onclick=\"document.getElementById('delete').style.display='block'\" class=\"btn btn-xs btn-danger command-delete\" data-row-id=\"" + row.id +
+                        "\"><span class=\"glyphicon glyphicon-trash\"></span></button> " +
+                        "<button  onclick=\"document.getElementById('edit').style.display='block'\" class=\"btn btn-xs btn-warning command-edit command-edit\" data-row-id=\"" + row.id +
+                        "\"><span class=\"glyphicon glyphicon-edit\"></span></button> " +
+                        "</center>";
+                }
+            }
+        }).on("loaded.rs.jquery.bootgrid", function() {
+            /* Executes after data is loaded and rendered */
+            grid.find(".command-delete").on("click", function(e) {
+
+                var idIngPro = $(this).data("row-id");
+                var url = "{% url 'produccion:elm-pro-quem' 0 %}".replace(0, idIngPro);
+                location.href = url;
+
+
+            }).end().find(".command-edit").on("click", function(e) {
+                var idIngPro = $(this).data("row-id");
+                var url = "{% url 'produccion:mod-pro-quem' 0 %}".replace(0, idIngPro);
+                location.href = url;
+            });
+        });
+
+    });
+</script>
+{% endblock%}
+{% block files_food %}
+
+{% endblock %}

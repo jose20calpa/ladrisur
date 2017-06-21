@@ -1,0 +1,29 @@
+{% extends "includes/base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block files_js_head %}
+<script type="text/javascript" src="{% static 'js/vehiculo.js'%}"></script>
+{% endblock %}
+{% block content %}
+{% if user.groups.all.0.name == "Administrador" or user.groups.all.0.name == "Auxiliar Ejecutivo" %}
+<center>
+    <h2>Administrador de Vehiculos</h2>
+    <hr>
+</center>
+
+<div class="col-sm-offset-2 col-sm-7 panel panel-default w3-card-4">
+  <br>
+    <form method="post">
+      <center><h3><b>Modificar Vehiculo</b></h3></center><hr>
+        {% csrf_token %} {% crispy form %}
+        <hr />
+        <!--<input type="submit" class="btn btn-primary"name="subGuar" value="Guardar">
+        <a class="btn btn-default" href="{% url 'administrador:lis-veh' %}">Cancelar</a>-->
+
+    </form>
+    <br>
+</div>
+{% else %}
+{% include "includes/error_atuenticacion.html" %}
+{% endif %}
+{%endblock%}

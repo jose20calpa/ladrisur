@@ -1,0 +1,31 @@
+{% extends "includes/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<center>
+    <h2>Modificar Combustible del Secado</h2>
+    <hr>
+</center>
+{% if msj %}
+<div class="alert alert-danger alert-dismissible" role="alert">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  <strong>{{msj}}).</strong>
+</div>
+{% endif %}
+
+<div class="col-md-offset-3 col-sm-5 panel panel-default w3-card-4">
+<br>
+    <form role="form"  method="post">
+      {% csrf_token %} {{form}}
+      <hr>
+      <ul class="list-inline pull-right">
+          <li> <a id="btn-can" class="btn btn-danger" href={% url "produccion:lis-sec" %}><b>Cancelar</b> <span class="glyphicon glyphicon-remove-sign"></span></a></li>
+          <li>
+              <input type="submit" class="btn btn-success" value="Modificar" />
+          </li>
+      </ul>
+
+    </form>
+</div>
+
+
+{%endblock%}

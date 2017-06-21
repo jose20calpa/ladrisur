@@ -1,0 +1,93 @@
+{% extends "includes/base.html" %} {% load crispy_forms_tags %} {% load static %} {% block content %}
+<br> {% if msj %}
+<div class="col-sm-12">
+
+    <div class="alert alert-danger fade in row">
+        <strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> </strong>{{msj}}{{msj1}}!
+        <a id="btn-can" class="btn btn-danger" href={% url "produccion:lis-preprod" %}><b>Regresar</b> <span class="glyphicon glyphicon-remove-sign"></span></a>
+    </div>
+
+
+</div>
+{% else %}
+{% if msj1 %}
+<div class="col-sm-12">
+
+    <div class="alert alert-danger fade in row">
+        <strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> </strong>{{msj1}}!
+        <a id="btn-can" class="btn btn-danger" href={% url "produccion:lis-preprod" %}><b>Regresar</b> <span class="glyphicon glyphicon-remove-sign"></span></a>
+    </div>
+</div>
+{% endif %}
+<center>
+    <h2>Preproduccion del {{fecha}}</h2>
+    <hr>
+</center>
+
+<div class="col-sm-12">
+
+    <div class="col-md-offset-1 alert alert-danger fade in row" style="display:none;" id="diverrP2">
+        <strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Datos Nulos o Invalidos!</strong> <br>
+        <p id="divmsjerrP2"></p>
+    </div>
+
+</div>
+
+<form role="form" id="frm_pro_ver" action="" method="post">
+    <div class="tab-pane" role="tabpanel">
+
+
+        {% csrf_token %}
+        <div class="col-sm-5 panel panel-default">
+
+            <center>
+                <h3><b>Nueva Producción Verde</b></h3></center>
+            <hr> {% crispy form2 %}
+            <ul class="list-inline pull-right">
+                <li> <a id="btn-can" class="btn btn-danger" href={% url "produccion:lis-preprod" %}><b>Cancelar</b> <span class="glyphicon glyphicon-remove-sign"></span></a></li>
+                <li>
+                    <a id="btn-agr" class="btn btn-warning"><b>Agregar</b> <span class="glyphicon glyphicon-plus-sign"></span></a>
+                </li>
+                <li>
+                    <input id="btn-fin" type="submit" class="btn btn-success" value="Finalizar" style="display:none" />
+                </li>
+            </ul>
+
+
+
+
+        </div>
+
+        <div class="col-sm-5 col-lg-offset-1">
+
+            <div id="divTbl" style="display: none">
+
+                <table class="table w3-table-all w3-card-4 table-striped" id="tbl-pro">
+
+                    <thead>
+                        <tr>
+                            <th>Producto</th>
+                            <th>Cantidad Verde</th>
+                            <th>
+                                <center>
+                                    Acciones
+                                </center>
+                            </th>
+                            <th style="display:none;">id</th>
+
+                        </tr>
+
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</form>
+{% endif %} {%endblock%}
+{% block files_food %}
+{{ block.super }}
+<script type="text/javascript" src="{% static 'js/produccion_verde.js'%}"></script>
+{% endblock %}

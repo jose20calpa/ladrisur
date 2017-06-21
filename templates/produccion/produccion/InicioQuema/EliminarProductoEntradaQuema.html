@@ -1,0 +1,37 @@
+{% extends "includes/base.html" %}
+{% block content %}
+{% if user.groups.all.0.name == "Administrador" or user.groups.all.0.name == "Auxiliar Ejecutivo" %}
+<center>
+    <h1><b>Eliminaras un Ingreso de la Quema</b></h1>
+    <hr>
+</center>
+{% if msj %}
+<div class="alert alert-danger">
+    <strong><span class="glyphicon glyphicon-warning-sign" aria-hidden="true"></span> {{ msj }}</strong>
+
+
+</div>
+{% endif %}
+<div class="col-sm-offset-2 col-sm-7 panel panel-default" >
+    <form method="post">
+      <h2>¿Desea Eliminar el Ingreso?</h2><br>
+      <p>
+        Cantidad verde(<b>{{cantidad}}</b>) <br>
+        Producto (<b>{{producto}}</b>)
+      </p>
+
+        {% csrf_token %}
+        <hr>
+        <center>
+          <input type="submit" class="btn btn-danger"name="Eliminar" value="Eliminar">
+          <a class="btn btn-success" href="{% url 'produccion:det-ini-quem' idquemini %}"> Cancelar</a>
+        </center>
+    </form>
+    <br>
+</div>
+
+
+{% else %}
+{% include "includes/error_atuenticacion.html" %}
+{% endif %}
+{% endblock %}

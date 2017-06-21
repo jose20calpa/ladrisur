@@ -1,0 +1,75 @@
+.mi-modal {
+  background-color: #563E3C;
+  color: white;
+  background-color: #563E3C;
+
+  position: fixed;
+  top: auto;
+  right: 30em;
+  bottom: auto;
+  left: 30em;
+  z-index: 1050;
+  overflow: hidden;
+  -webkit-overflow-scrolling: touch;
+  outline: 0;
+}
+
+.panel-default {
+  border-color: white;
+  background-color: #00685c;
+  /*background-color: #681B1B;
+  background-color: #563E3C;*/
+  color: white;
+}
+
+.form-control:focus {
+  border-color: ##bec719;
+  outline: 3;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+          box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+}
+
+.a-men{
+  color: white;
+}
+a:hover,
+a:focus {
+  color: white;
+  text-decoration: underline;
+}
+
+.nav-mi > li > a:hover,
+.nav-mi > li > a:focus {
+  background-color: #e84c3d;
+  border-color: #337ab7;
+}
+
+.nav-mi .open > a,
+.nav-mi .open > a:hover,
+.nav-mi .open > a:focus {
+  text-decoration: none;
+  border-color: #e84c3d;
+  background-color: #e84c3d;
+}
+
+
+.navbar-default {
+  background-color: #f8f8f8;
+  border-color: #e84c3d;
+
+}
+/*
+.navbar-default .navbar-toggle:hover,
+.navbar-default .navbar-toggle:focus {
+  background-color: #e84c3d;
+}
+
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:hover,
+.nav-tabs > li.active > a:focus {
+  color: #cc3c3c;
+  cursor: default;
+  background-color: #db2a2a;
+  border: 1px solid #ddd;
+  border-bottom-color: transparent;
+}*/

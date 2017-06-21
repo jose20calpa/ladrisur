@@ -1,0 +1,19 @@
+<!-- Barra de navegacion Acordion-->
+<div class="col-sm-3 col-md-2">
+    <div class="panel-group" id="accordion">
+        <div class="panel panel-default">
+            <!--ADMINISTRADOR-->
+            {% include "includes/acordion/acor_administrador.html" %}
+            <div class="panel panel-default">
+                <!--PRODUCCION-->
+                {% include "includes/acordion/acor_produccion.html" %}  
+                <!--VENTAS-->
+                {% include "includes/acordion/acor_ventas.html" %}
+                <!--INVENTARIO-->
+                {% include "includes/acordion/acor_inventario.html" %}
+                <!--REPORTES-->
+                {% include "includes/acordion/acor_reportes.html" %}
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,315 @@
+{% extends "includes/base.html" %}{% load static %}
+{% block files_head %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+{% include "includes/files_tables.html" %}
+<!-- Auto Completar (input)-->
+<link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" media="all" />
+<script src="http://code.jquery.com/ui/1.10.2/jquery-ui.js" ></script>
+<!-- Fin Auto Completar (input)-->
+{% endblock %}
+{% block content %}
+{% if user.groups.all.0.name == "Administrador" or user.groups.all.0.name == "Auxiliar Ejecutivo" %}
+<center>
+    <h2>Administrador de Ventas en Planta </h2>
+    <hr>
+</center>
+<h3>Cliente</h3><hr>
+<a class="btn btn-primary" href="{% url 'ventas:cre-cli'%}">
+    <span class="glyphicon glyphicon-pencil"></span>Agregar Cliente
+</a>
+<hr>
+<form method="post">
+    {% csrf_token %}
+    <div class="col-md-3">
+      {{form}}
+    </div>
+
+
+
+
+</form>
+
+<div class="col-md-12">
+  <hr>
+  <h3>Productos</h3><hr>
+  <!-- Trigger the modal with a button PRIMERA -->
+  <button type="button" class="btn btn-success" data-toggle="modal" data-target="#myModalPrimera" id="btn-mod-pri">
+    <span class="glyphicon fa fa-diamond"></span>
+    <b> Productos de Primera</b>
+  </button>
+
+  <!-- Modal PRIMERA-->
+  <div id="myModalPrimera" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+          <!-- Modal content-->
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title"><b>Productos de Primera</b></h4>
+              </div>
+              <div class="modal-body">
+                  <div class="table-responsive">
+                      <table id="grid-basic" class="table table-condensed table-hover table-striped table w3-table-all w3-card-4">
+                          <thead class="thead-inverse">
+                            <tr>
+                                <th data-column-id="id" data-type="numeric" data-identifier="true">ID</th>
+                                <th data-column-id="nom">Nombre</th>
+                                <th data-column-id="ape">$ Fabrica 1ra</th>
+                            </tr>
+                              <!--<th id="id-row" data-column-id="id" data-type="numeric">ID</th>
+                              <th data-column-id="name">Nombre</th>
+                              <th data-column-id="prefab1" data-type="numeric">$ Fabrica 1ra</th>
+                              <th data-column-id="commands" data-formatter="commands" data-sortable="false">Acciones</th>-->
+                          </thead>
+                          <tbody>
+                              {% for producto in lista_pro_prim %}
+                              <tr data-row-id="3">
+                                  <td>
+                                      {{ producto.id}}
+                                  </td>
+                                  <td>
+                                      {{ producto.nombre_producto}}
+                                  </td>
+                                  <td>
+                                      {{ producto.precio_fabrica_primera}}
+                                  </td>
+                              </tr>
+                              {% endfor %}
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                <button id="btnAgrProds" type="button" class="btn btn-success">Agregar a la Venta</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+              </div>
+          </div>
+
+      </div>
+  </div>
+
+  <!-- Trigger the modal with a button SEGUNDA-->
+  <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModalSegunda" id="btn-mod-seg">
+    <span class="glyphicon fa fa-diamond"></span>
+    <b> Productos de Segunda</b>
+  </button>
+  <hr>
+
+
+
+  <!-- Modal SEGUNDA-->
+  <div id="myModalSegunda" class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+
+          <!-- Modal content-->
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title"><b>Productos de Segunda</b></h4>
+              </div>
+              <div class="modal-body">
+                  <div class="table-responsive">
+                      <table id="grid-basic-seg" class="table w3-table-all w3-card-4">
+                          <thead class="thead-inverse">
+                              <th id="id-row" data-column-id="id" data-type="numeric">ID</th>
+                              <th data-column-id="name">Nombre</th>
+                              <th data-column-id="prefab1" data-type="numeric">$ Fabrica 2da</th>
+                              <th data-column-id="commands" data-formatter="commands" data-sortable="false">Acciones</th>
+                          </thead>
+                          <tbody>
+                              {% for producto in lista_pro_seg %}
+                              <tr>
+                                  <td style="display:hidden;">
+                                      {{ producto.id}}
+                                  </td>
+                                  <td id="sel">
+                                      {{ producto.nombre_producto}}
+                                  </td>
+                                  <td>
+                                      {{ producto.precio_fabrica_segunda}}
+                                  </td>
+
+                              </tr>
+                              {% endfor %}
+                          </tbody>
+                      </table>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+<div class="row col-md-12">
+    <div class="table-responsive">
+        <table id="grid-basic-prods-ven" class="table w3-table-all w3-card-4">
+            <thead class="thead-inverse">
+                <th data-column-id="id" data-type="numeric">ID</th>
+                <th data-column-id="pro">Producto</th>
+                <th data-column-id="pre">$ Precio</th>
+                <th data-column-id="can">Cantidad</th>
+                <th data-column-id="act">Accion</th>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+<script>
+$(document).ready(function() {
+  //FUNCION AUTOCOMPLETAR CLIENTE
+  $("#id_id_cliente").autocomplete({
+    source: "/ladrisur/ventas/Buscar_cliente/",
+    minLength: 2,
+  });
+
+  //MODAL-GRID PRODUCTOS DE PRIMERA
+  // var grid_pri = $("#grid-basic").bootgrid({
+  //   formatters: {
+  //     "commands": function(column, row) {
+  //       return "<center>" +
+  //       "<button  class=\"btn btn-xs btn-success command-prod-ven-pri\" data-row-id=\"" + row.id +
+  //       "\"><span class=\"glyphicon glyphicon-shopping-cart\"></span></button> " +
+  //       "</center>";
+  //     }
+  //   }
+  // }).on("loaded.rs.jquery.bootgrid", function() {
+  //     /* Executes after data is loaded and rendered */
+  //     grid_pri.find(".command-prod-ven-pri").on("click", function(e, rows) {
+  //       alert("pita");
+  //
+  //       for (var i = 0; i < rows.length; i++) {
+  //           rowIds.push(rows[i].id);
+  //       }
+  //       var idproducto = $(this).data("row-id");
+  //       alert(idproducto);
+  //
+  //       /*alert($('[data-row-id="'+idproducto+'"]'));
+  //       $('[data-row-id="'+idproducto+'"]').remove();*/
+  //
+  //       //eliminarProducto(idproducto);
+  //       //Elimina la fila
+  //
+  //       alert("fin");
+  //
+  //
+  //     });
+  // });
+  //arreglo de IDS de Productos  seleccionados
+  var rowProds = [[],[],[]];
+  var rowIds = [];
+  $("#grid-basic").bootgrid({
+      selection: true,
+      multiSelect: true,
+      rowSelect: true,
+      keepSelection: true,
+  }).on("selected.rs.jquery.bootgrid", function(e, rows) {
+      for (var i = 0; i < rows.length; i++) {
+          rowIds.push(rows[i].id);
+          rowProds.push([rows[i].id],[rows[i].name],[rows[i].prefab1])
+      }
+  }).on("deselected.rs.jquery.bootgrid", function(e, rows) {
+      for (var i = 0; i < rows.length; i++) {
+          rowIds.pop(rows[i].id);
+      }
+  });
+
+
+  $("#btnAgrProds").click(function() {
+    if (rowIds.length == 0) {
+        alert("Selecciona!!");
+    } else {
+      //$("#grid-basic").bootgrid("remove");
+      alert(rowProds);
+        $('#myModalPrimera').modal('hide');
+        // Obtenemos el numero de filas (td) que tiene la primera columna
+        // (tr) del id "tabla"
+        var tds=$("#grid-basic-prods-ven tr:first td").length;
+        // Obtenemos el total de columnas (tr) del id "tabla"
+        var trs=4;
+        alert("columnas"+trs);
+        alert("filas"+rowIds.length);
+        var nuevaFila="";
+        for(var k=0;k<rowIds.length;k++){
+        nuevaFila+="<tr>";
+          for(var i=0;i<trs;i++){
+            // añadimos las columnas
+            nuevaFila+="<td>columna "+(i+1)+" Añadida con jquery</td>";
+          }
+        nuevaFila+="</tr>";
+        }
+
+
+        // Añadimos una columna con el numero total de columnas.
+        // Añadimos uno al total, ya que cuando cargamos los valores para la
+        // columna, todavia no esta añadida
+
+        $("#grid-basic-prods-ven").append(nuevaFila);
+
+    }
+
+  });
+
+function eliminarProducto(index) {
+  alert("elimi"+ index);
+    //Elimina la fila
+    var row = document.getElementById(index);
+    row.parentNode.removeChild(row);
+
+    };
+
+  //MODAL-GRID PRODUCTOS DE SEGUNDA
+  var grid_seg = $("#grid-basic-seg").bootgrid({
+    formatters: {
+      "commands": function(column, row) {
+        return "<button class=\"btn btn-xs btn-success command-prod-ven-seg\" data-row-id=\"" + row.id +
+        "\"><span class=\"glyphicon glyphicon-shopping-cart\"></span></button> ";
+      }
+    }
+  }).on("loaded.rs.jquery.bootgrid", function() {
+      /* Executes after data is loaded and rendered */
+      grid_seg.find(".command-prod-ven-seg").on("click", function(e) {
+        alert("pita");
+        //$(this).closest('tr').append("d");
+        //$(this).closest('tr').remove();
+        var idproducto = $(this).data("row-id");
+        //alert($(this).object());
+
+
+        $(this).closest('tr').appendTo("#grid-basic-prods-ven tbody");
+        $(this).closest('tr').append("<td style='width: 10%;'><input id='txtcanpri' type='number' name='can_pro' value='0' required pattern='[0-9]'></td>");
+        $(this).closest('tr').append("<td id=\"" + idproducto +"\"><button data-row-id=\"" + idproducto +"\" type='btn_br_pro' class='btn btn-danger btn-sm'><span class='glyphicon glyphicon-trash'></span></button></td>");
+        $(this).closest('td').remove();
+
+
+
+      });
+  });
+
+
+
+  /*function Eliminar(tab, i) {
+    document.getElementById(tab)[0].setAttribute("id", "tableid");
+    document.getElementById("tableid").deleteRow(i);
+  }*/
+});
+</script>
+{% else %}
+{% include "includes/error_atuenticacion.html" %}
+{% endif %}
+{% endblock%}
+{% block files_food %}
+
+{% endblock %}

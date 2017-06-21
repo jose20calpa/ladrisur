@@ -1,0 +1,226 @@
+{% extends "includes/base.html" %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block files_head %}
+<link rel='stylesheet' href="{% static 'css/estilo_wizard_inicio_quema.css' %}">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+{% include "includes/files_datepicker.html" %}
+{% endblock %} {% block content %}
+<center>
+    <h2>Inicio de Quema</h2>
+    <hr>
+</center>
+{% if msj %}
+<div class="alert alert-info">
+  <strong>Lo sentimos no hay hornos disponibles</strong>
+</div>
+{% else %}
+<div class="row">
+	<section>
+		<div class="wizard">
+			<div class="wizard-inner">
+				<div class="connecting-line"></div>
+				<ul class="nav nav-tabs" role="tablist">
+
+					<li role="presentation" class="active">
+						<a href="#step1" data-toggle="tab" aria-controls="step1" role="tab" title="Fecha y Horno">
+							<span class="round-tab"><i class="fa fa-calendar-check-o" aria-hidden="true"></i></span>
+						</a>
+					</li>
+
+					<li role="presentation" class="disabled">
+						<a href="#step2" data-toggle="tab" aria-controls="step2" role="tab" title="Ingreso de Productos">
+							<span class="round-tab"><i class="fa fa-diamond" aria-hidden="true"></i></span>
+						</a>
+					</li>
+
+					<li role="presentation" class="disabled">
+						<a href="#" data-toggle="tab" aria-controls="complete" role="tab" title="Finalizar">
+							<span class="round-tab"><i class="glyphicon glyphicon-ok"></i></span>
+						</a>
+					</li>
+				</ul>
+			</div>
+
+			<form role="form" id="frm_ini_quem" action="" method="post">
+				{% csrf_token %}
+
+
+				<!-- STEP1 HORNO - FECHA HORA -->
+				<div class="tab-content">
+					<div class="tab-pane active col-sm-7 col-md-offset-2" role="tabpanel" id="step1">
+						<div class="col-sm-12">
+
+							<div class="col-md-offset-1 alert alert-danger fade in row" style="display:none;" id="diverrP1">
+								<strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Datos Nulos o Invalidos!</strong> <br>
+								<p id="divmsjerrP1"></p>
+							</div>
+
+						</div>
+            <div class="col-sm-12">
+							<h3><b>Fecha y Horno</b></h3>
+						</div>
+
+            <div class="col-sm-6">
+							<label>Fecha de Encendido</label>
+							<div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd" data-date-today-highlight="true">
+								{{form2.fecha_encendido}}
+								<div class="input-group-addon">
+									<span class="glyphicon glyphicon-th"></span>
+								</div>
+							</div>
+							<script type="text/javascript">
+								$('.datepicker').datepicker({todayHighlight: true,});
+							</script>
+							<br>
+						</div>
+						<div class="col-sm-6">
+							<label>Hora de Encendido</label>
+							<div class="form-group">
+								<div class='input-group date' id='datetimepicker3'>
+									{{form2.hora_encendido}}
+									<span class="input-group-addon"><span class="glyphicon glyphicon-time"></span>
+									</span>
+								</div>
+							</div>
+
+							<script type="text/javascript">
+									$('#datetimepicker3').datetimepicker({
+										format: 'LT'
+									});
+
+							</script>
+						</div>
+
+						<div class="col-sm-12">
+							{{form}}
+						</div>
+
+						<div class="col-sm-12">
+							<hr>
+						</div>
+
+						<ul class="list-inline pull-right">
+
+							<li><button type="button" class="btn btn-primary next-step">Siguiente</button>
+							</li>
+						</ul>
+					</div>
+
+					<!-- STEP2 HORNO - INGRESO DE PRODUCTOS -->
+
+					<div class="tab-pane" role="tabpanel" id="step2">
+						<div class="col-sm-7 col-md-offset-2">
+
+							<div class="col-sm-12">
+
+								<div class="col-md-offset-1 alert alert-danger fade in row" style="display:none;" id="diverrP2">
+									<strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Datos Nulos o Invalidos!</strong> <br>
+									<p id="divmsjerrP2"></p>
+								</div>
+
+							</div>
+
+						</div>
+						<div class="col-sm-12">
+							<center>
+								<h3><b>Ingreso de Productos</b></h3>
+							</center>
+							<hr>
+
+						</div>
+
+						<!-- Tabla de Productos Disponibles en verde -->
+						<div class="col-sm-3">
+							<h4><b>Disponibles en Verde</b></h4>
+							<hr>
+							<table class="table w3-table-all w3-card-4 table-striped" id="tbl-pro-ver">
+								<thead>
+									<th>Producto</th>
+									<th>
+										Disponible
+									</th>
+								</thead>
+								<tbody>
+									{% for registro in lista_can_prod%}
+									<tr>
+										<td>{{ registro.nombre_producto}}</td>
+										<td>{{ registro.cantidad_producto}}</td>
+									</tr>
+                  <input type="number" id="can-{{ registro.id}}" value="{{ registro.cantidad_producto}}" hidden disabled>
+									{% endfor %}
+
+								</tbody>
+							</table>
+
+						</div>
+
+
+						<div class="col-sm-5">
+							<h4><b>Producto y Cantidad para la Quema</b></h4>
+							<hr> {% crispy form3 %}
+							<hr>
+
+							<ul class="list-inline pull-right">
+								<li><button type="button" class="btn btn-default prev-step">Atras</button></li>
+								<li>
+									<a id="btnAgrPro" class="btn btn-warning" role="button"><span class="glyphicon glyphicon-plus-sign"></span>  Agregar Producto</a>
+								</li>
+								<li>
+									<input id='btnProds' type="submit" class="btn btn-primary" value="Finalizar" style="display:none" /></li>
+
+							</ul>
+						</div>
+
+
+						<!-- Tabla de Productos que se van Agregando -->
+						<div class="col-sm-4">
+							<div id="divTbl" style="display: none">
+								<h4><b>Productos agregados a la Quema</b></h4>
+								<hr>
+
+
+
+
+								<table class="table w3-table-all w3-card-4 table-striped" id="tbl-pro">
+									<thead>
+										<tr>
+											<th>Producto</th>
+											<th>Cantidad</th>
+											<th>
+												<center>
+													Acciones
+												</center>
+											</th>
+											<th style="display:none;">id</th>
+
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+
+							</div>
+						</div>
+
+					</div>
+
+
+					<div class="tab-pane" role="tabpanel" id="complete">
+						<center>
+							<h3><b>No te Apresures ve paso a Paso!!</b></h3>
+						</center>
+
+					</div>
+
+				</div>
+			</form>
+		</div>
+	</section>
+
+</div>
+{% endif %}
+{% endblock %}
+{% block files_food %}
+<script type="text/javascript" src="{% static 'js/inicio_quema.js'%}"></script>
+{% endblock %}

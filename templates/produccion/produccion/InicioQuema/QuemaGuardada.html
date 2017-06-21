@@ -1,0 +1,491 @@
+{% extends "includes/base.html" %} {% load crispy_forms_tags %} {% block content %} {{msj}}
+<div class="container">
+	<div class="row">
+		<section>
+			<div class="wizard">
+				<div class="wizard-inner">
+					<div class="connecting-line"></div>
+					<ul class="nav nav-tabs" role="tablist">
+
+						<li role="presentation" class="disabled">
+							<a href="#" data-toggle="tab" aria-controls="step1" role="tab" title="Fecha y Horno">
+								<span class="round-tab">
+                                <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+                            </span>
+							</a>
+						</li>
+
+						<li role="presentation" class="disabled">
+							<a href="#" data-toggle="tab" aria-controls="step2" role="tab" title="Ingreso de Productos">
+								<span class="round-tab"><i class="fa fa-diamond" aria-hidden="true"></i></span>
+							</a>
+						</li>
+
+						<li role="presentation" class="active">
+							<a href="#complete" data-toggle="tab" aria-controls="complete" role="tab" title="Finalizar">
+								<span class="round-tab"><i class="glyphicon glyphicon-ok"></i></span>
+							</a>
+						</li>
+					</ul>
+				</div>
+
+				<form role="form" class="" action="" method="post" >
+					{% csrf_token %}
+					<br>
+
+					<div class="col-sm-7 col-md-offset-2 alert alert-danger fade in " style="display:none;" id="diverr">
+						<strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Datos Nulos o Invalidos!</strong> Por favor revisa los datos que desea registrar.
+						<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+					</div>
+					<!-- STEP1 HORNO - FECHA HORA -->
+					<div class="tab-content col-md-offset-2" >
+						<div class="tab-pane col-sm-7" role="tabpanel" id="step1">
+
+
+						</div>
+
+						<!-- STEP2 HORNO - INGRESO DE PRODUCTOS -->
+
+						<div class="tab-pane col-sm-7" role="tabpanel" id="step2">
+
+						</div>
+						
+						<div class="tab-pane active" role="tabpanel" id="complete">
+							<h3><b>{{msjres}}</b></h3>
+							<p>{{msjdetalle}}</p>
+
+								<a id="btnIncioQuema" href="{% url 'produccion:cre-quem-wz' %}" class="btn btn-warning" role="button"><span class="glyphicon glyphicon-plus-sign"></span>  Nueva Quema</a>
+						</div>
+
+					</div>
+				</form>
+
+
+
+			</div>
+		</section>
+	</div>
+</div>
+
+<style type="text/css">
+	.wizard {
+		margin: 20px auto;
+		background: #fff;
+	}
+
+	.wizard .nav-tabs {
+		position: relative;
+		margin: 35px;
+		margin-right: 30%;
+		left: 5%;
+		margin-bottom: 0;
+		border-bottom-color: #3d3d3d;
+	}
+
+	.wizard>div.wizard-inner {
+		position: relative;
+		right: 2%;
+		left: 2%;
+	}
+
+	.connecting-line {
+		height: 2px;
+		background: #3d3d3d;
+		position: absolute;
+		width: 45%;
+		//margin: 0 auto;
+		left: 18%;
+		right: 0;
+		top: 50%;
+		z-index: 1;
+	}
+
+	.wizard .nav-tabs>li.active>a,
+	.wizard .nav-tabs>li.active>a:hover,
+	.wizard .nav-tabs>li.active>a:focus {
+		color: #555555;
+		cursor: default;
+		border: 0;
+		border-bottom-color: transparent;
+	}
+
+	span.round-tab {
+		width: 70px;
+		height: 70px;
+		line-height: 70px;
+		display: inline-block;
+		border-radius: 100px;
+		background: #fff;
+		border: 2px solid #e0e0e0;
+		z-index: 2;
+		position: absolute;
+		left: 0;
+		text-align: center;
+		font-size: 25px;
+	}
+
+	span.round-tab i {
+		color: #555555;
+	}
+
+	.wizard li.active span.round-tab {
+		background: #fff;
+		border: 2px solid #e84c3d;
+	}
+
+	.wizard li.active span.round-tab i {
+		color: #e84c3d;
+	}
+
+	span.round-tab:hover {
+		color: #333;
+		border: 2px solid #333;
+	}
+
+	.wizard .nav-tabs>li {
+		width: 32%;
+	}
+
+	.wizard li:after {
+		content: " ";
+		position: absolute;
+		left: 46%;
+		opacity: 0;
+		margin: 0 auto;
+		bottom: 0px;
+		border: 5px solid transparent;
+		border-bottom-color: #e84c3d;
+		transition: 0.1s ease-in-out;
+	}
+
+	.wizard li.active:after {
+		content: " ";
+		position: absolute;
+		left: 46%;
+		opacity: 1;
+		margin: 0 auto;
+		bottom: 0px;
+		border: 10px solid transparent;
+		border-bottom-color: #e84c3d;
+	}
+
+	.wizard .nav-tabs>li a {
+		width: 70px;
+		height: 70px;
+		margin: 20px auto;
+		border-radius: 100%;
+		padding: 0;
+	}
+
+	.wizard .nav-tabs>li a:hover {
+		background: transparent;
+	}
+
+	.wizard .tab-pane {
+		position: relative;
+		padding-top: 50px;
+	}
+
+	.wizard h3 {
+		margin-top: 0;
+	}
+
+	.step1 .row {
+		margin-bottom: 10px;
+	}
+
+	.step_21 {
+		border: 1px solid #eee;
+		border-radius: 5px;
+		padding: 10px;
+	}
+
+	.step33 {
+		border: 1px solid #ccc;
+		border-radius: 5px;
+		padding-left: 10px;
+		margin-bottom: 10px;
+	}
+
+	.dropselectsec {
+		width: 68%;
+		padding: 6px 5px;
+		border: 1px solid #ccc;
+		border-radius: 3px;
+		color: #333;
+		margin-left: 10px;
+		outline: none;
+		font-weight: normal;
+	}
+
+	.dropselectsec1 {
+		width: 74%;
+		padding: 6px 5px;
+		border: 1px solid #ccc;
+		border-radius: 3px;
+		color: #333;
+		margin-left: 10px;
+		outline: none;
+		font-weight: normal;
+	}
+
+	.mar_ned {
+		margin-bottom: 10px;
+	}
+
+	.wdth {
+		width: 25%;
+	}
+
+	.birthdrop {
+		padding: 6px 5px;
+		border: 1px solid #ccc;
+		border-radius: 3px;
+		color: #333;
+		margin-left: 10px;
+		width: 16%;
+		outline: 0;
+		font-weight: normal;
+	}
+	/* according menu */
+
+	#accordion-container {
+		font-size: 13px
+	}
+
+	.accordion-header {
+		font-size: 13px;
+		background: #ebebeb;
+		margin: 5px 0 0;
+		padding: 7px 20px;
+		cursor: pointer;
+		color: #fff;
+		font-weight: 400;
+		-moz-border-radius: 5px;
+		-webkit-border-radius: 5px;
+		border-radius: 5px
+	}
+
+	.unselect_img {
+		width: 18px;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+	}
+
+	.active-header {
+		-moz-border-radius: 5px 5px 0 0;
+		-webkit-border-radius: 5px 5px 0 0;
+		border-radius: 5px 5px 0 0;
+		background: #F53B27;
+	}
+
+	.active-header:after {
+		content: "\f068";
+		font-family: 'FontAwesome';
+		float: right;
+		margin: 5px;
+		font-weight: 400
+	}
+
+	.inactive-header {
+		background: #333;
+	}
+
+	.inactive-header:after {
+		content: "\f067";
+		font-family: 'FontAwesome';
+		float: right;
+		margin: 4px 5px;
+		font-weight: 400
+	}
+
+	.accordion-content {
+		display: none;
+		padding: 20px;
+		background: #fff;
+		border: 1px solid #ccc;
+		border-top: 0;
+		-moz-border-radius: 0 0 5px 5px;
+		-webkit-border-radius: 0 0 5px 5px;
+		border-radius: 0 0 5px 5px
+	}
+
+	.accordion-content a {
+		text-decoration: none;
+		color: #333;
+	}
+
+	.accordion-content td {
+		border-bottom: 1px solid #dcdcdc;
+	}
+
+	@media( max-width: 585px) {
+		.wizard {
+			width: 90%;
+			height: auto !important;
+		}
+		span.round-tab {
+			font-size: 16px;
+			width: 50px;
+			height: 50px;
+			line-height: 50px;
+		}
+		.wizard .nav-tabs>li a {
+			width: 50px;
+			height: 50px;
+			line-height: 50px;
+		}
+		.wizard li.active:after {
+			content: " ";
+			position: absolute;
+			left: 35%;
+		}
+	}
+</style>
+
+<script>
+	$(document).ready(function() {
+		//ARRAYS DE productos
+		var lis_pro_val = new Array;
+		var lis_pro_nom = new Array;
+		var lis_can = new Array;
+		//contador pasos
+		var conpas = 0;
+		//tabla
+		$("#btnAgrPro").click(function() {
+			var sel_pro = document.getElementById('id_id_producto');
+			var pro = document.getElementById('id_id_producto').value;
+			var can = document.getElementById('id_cantidad_verde').value;
+			if (pro == "" || can == "") {
+				alert("Complete los Campos");
+			} else {
+				//Nombre del Producto
+				var nom_pro = sel_pro.options[sel_pro.selectedIndex].text;
+				//llenamos los arreglos
+				lis_pro_val.push(pro);
+				lis_pro_nom.push(nom_pro);
+				lis_can.push(can);
+				//limpiamos el formulario
+				sel_pro.value = "";
+				document.getElementById('id_cantidad_verde').value = '';
+
+				// lis_pro_val.forEach(function(item, index, array) {
+				//     console.log(item, index);
+				// });
+				mostrarTabla(pro, nom_pro, can);
+
+			}
+
+
+		});
+
+		function mostrarTabla(pro, nom_pro, can) {
+			//añadir tabla
+			var table = document.getElementById('tbl-pro');
+			table.style.display = 'block';
+			var rowCount = table.rows.length;
+			var row = table.insertRow(rowCount);
+			var cell1 = row.insertCell(0);
+			var cell2 = row.insertCell(1);
+			var cell3 = row.insertCell(2);
+			var cell4 = row.insertCell(3);
+			cell1.innerHTML = "<input type='hidden' name='id_producto' value=" + pro + ">";
+			cell2.innerHTML = "<input type='hidden' name='nom_pro' value=" + nom_pro + "><p>" + nom_pro + "</p>";
+			cell3.innerHTML = "<input type='hidden' name='cantidad_verde' value=" + can + "><p>" + can + "</p>";
+			cell4.innerHTML = "<button  onclick=\"document.getElementById('delete').style.display='block'\" class=\"btn btn-xs btn-danger command-delete\" data-row-id=\"" + row.id +
+				"\"><span class=\"glyphicon glyphicon-trash\"></span></button> ";
+		}
+		//BOTON GUARDAR ajax
+		var urlact = window.location;
+
+		$("#btnProds").click(function() {
+			$.ajax({
+				type: 'POST',
+				url: urlact,
+				data: {
+					'id_horno': id_horno,
+					'fecha_encendido': fecha_encendido,
+					'hora_encendido': hora_encendido,
+					'id_producto': id_producto,
+					'cantidad_verde': cantidad_verde,
+					CSRF: getCSRFTokenValue()
+
+				},
+
+			});
+		});
+
+    $("#btnIncioQuema").click(function() {
+			location.reload();
+		});
+
+		//Initialize tooltips
+		$('.nav-tabs > li a[title]').tooltip();
+
+		//Wizard
+		$('a[data-toggle="tab"]').on('show.bs.tab', function(e) {
+
+			var $target = $(e.target);
+
+			if ($target.parent().hasClass('disabled')) {
+				return false;
+			}
+		});
+
+		$(".next-step").click(function(e) {
+
+			if (ValidarStep1()) {
+				var $active = $('.wizard .nav-tabs li.active');
+				$active.next().removeClass('disabled');
+				nextTab($active);
+
+			} else {
+				document.getElementById("diverr").style.display = "block";
+			}
+
+		});
+
+		function ValidarStep1() {
+			var horno = document.getElementById("id_id_horno");
+			var fecha = document.getElementById("id_fecha_encendido");
+			var hora = document.getElementById("id_hora_encendido");
+
+			if (horno.value == 0) {
+				horno.focus();
+
+				return false;
+			} else {
+				if (fecha.value == "") {
+					fecha.focus();
+					return false;
+
+				} else if (hora.value == "") {
+					hora.focus();
+					return false;
+				} else {
+					return true;
+				}
+
+			}
+		}
+		$(".prev-step").click(function(e) {
+			conpas--;
+
+			var $active = $('.wizard .nav-tabs li.active');
+			prevTab($active);
+
+		});
+	});
+
+	function nextTab(elem) {
+		$(elem).next().find('a[data-toggle="tab"]').click();
+	}
+
+	function prevTab(elem) {
+		$(elem).prev().find('a[data-toggle="tab"]').click();
+	}
+</script>
+
+{% endblock %}

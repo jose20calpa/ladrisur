@@ -1,0 +1,38 @@
+<div class="panel-heading" style="background-color:#0c9a81; color: white;">
+    <h4 class="panel-title">
+            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"><span class="glyphicon glyphicon-folder-close">
+            </span> Produccion</a>
+        </h4>
+</div>
+{% if actv == '2'%}
+<div id="collapseTwo" class="panel-collapse collapse in">
+    {%else%}
+    <div id="collapseTwo" class="panel-collapse collapse ">
+        {%endif%}
+        <div class="panel-body">
+            <table class="table">
+                <tr>
+                    <td>
+                        <span class="glyphicon glyphicon-pencil text-primary"></span><a href="{% url 'produccion:lis-preprod'%}">Pre-Produccion</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="glyphicon glyphicon-flash text-success"></span><a href="#">Produccion</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="glyphicon glyphicon-file text-info"></span><a href="http://www.jquery2dotnet.com">Newsletters</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="glyphicon glyphicon-comment text-success"></span><a href="http://www.jquery2dotnet.com">Comments</a>
+                        <span class="badge">42</span>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

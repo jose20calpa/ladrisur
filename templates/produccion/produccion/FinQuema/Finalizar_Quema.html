@@ -1,0 +1,409 @@
+{% extends "includes/base.html" %} {% load crispy_forms_tags %}{% load static %}
+{% block files_head %}
+<link rel='stylesheet' href="{% static 'css/estilo_wizard_fin_quema.css' %}">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+
+{% include "includes/files_datepicker.html" %}
+{% include "includes/files_tables.html" %}
+{% endblock %}
+{% block content %}
+<center>
+    <h2>Fin de Quema</h2>
+    <hr>
+</center>
+{% if msj1 %}
+<div class="alert alert-info">
+    <strong>{{msj1}}</strong>
+</div>
+{% else %}
+<div class="row">
+    <section>
+        <div class="wizard">
+            <div class="wizard-inner">
+                <div class="connecting-line"></div>
+                <ul class="nav nav-tabs" role="tablist">
+
+                    <li role="presentation" class="active" id="li-1">
+                        <a href="#step1" data-toggle="tab" aria-controls="step1" role="tab" title="Fecha y Horneros">
+                            <span class="round-tab">
+                                <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    </li>
+
+                    <li role="presentation" class="disabled" id="li-2">
+                        <a href="#step2" data-toggle="tab" aria-controls="step2" role="tab" title="Productos Egresados">
+                            <span class="round-tab"><i class="fa fa-diamond"></i></span>
+                        </a>
+                    </li>
+
+                    <li role="presentation" class="disabled">
+                        <a href="#step3" data-toggle="tab" aria-controls="step3" role="tab" title="Combustibles">
+                            <span class="round-tab">
+                               <i class="glyphicon glyphicon-tint"></i>
+                           </span>
+                        </a>
+                    </li>
+
+                    <li role="presentation" class="disabled">
+                        <a href="#" data-toggle="tab" aria-controls="complete" role="tab" title="Finalizar">
+                            <span class="round-tab"><i class="glyphicon glyphicon-ok"></i></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <form role="form" id="frm_fin_quem" action="" method="post">
+                {% csrf_token %}
+
+
+                <!-- STEP1 HORNEROS - FECHA HORA -->
+                <div class="tab-content">
+                    <div class="tab-pane active" role="tabpanel" id="step1">
+                        <div class="col-sm-12">
+
+                            <div class="col-md-offset-1 alert alert-danger fade in row" style="display:none;" id="diverrP1">
+                                <strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Datos Nulos o Invalidos!</strong> <br>
+                                <p id="divmsjerrP1"></p>
+                            </div>
+
+                        </div>
+
+                        <div class="col-sm-12">
+                            <center>
+                                <h3><b>Fecha y Horneros</b></h3>
+                            </center>
+                            <hr>
+                        </div>
+                        <div class="col-sm-offset-2 col-sm-12">
+                            <div class="col-sm-3">
+                                <label>Fecha Incio</label>
+                                <div class="input-group date" data-provide="datepicker_ini" data-date-format="yyyy-mm-dd">
+
+                                    <input id="txt_fec_ini" class="form-control" type="text" value="{{fecha_inicio}}" disabled>
+                                    <div class="input-group-addon">
+                                        <span class="glyphicon glyphicon-th"></span>
+                                    </div>
+                                </div>
+
+                                <br>
+                            </div>
+                            <div class="col-sm-3">
+                                <label>Fecha Apagado</label>
+                                <div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd" id="dtp-fec-apg">
+                                    {{formSal.fecha_apagado}}
+                                    <div class="input-group-addon">
+                                        <span class="glyphicon glyphicon-th"></span>
+                                    </div>
+                                </div>
+                                <script type="text/javascript">
+                                    var fec_ini = document.getElementById('txt_fec_ini').value;
+                                    fec_ini = fec_ini.split(" de ");
+                                    var dia = fec_ini[0];
+                                    var año = fec_ini[2];
+                                    var mes = fec_ini[1];
+                                    var meses = [
+                                        "Enero", "Febrero", "Marzo",
+                                        "Abril", "Mayo", "Junio", "Julio",
+                                        "Agosto", "Septiembre", "Octubre",
+                                        "Noviembre", "Diciembre"
+                                    ]
+                                    mes = meses.indexOf(mes)+1;
+                                    var startDate = new Date(2017,6,7);
+                                    var endDate = new Date(2017,6,7);
+                                    $('#dtp-fec-apg').datepicker().on('changeDate', function(ev) {
+
+
+                                        var endDate = new Date(ev.date.getUTCFullYear(),ev.date.getMonth()+1,ev.date.getUTCDate());
+                                        if (endDate.valueOf() > startDate.valueOf()) {
+                                          document.getElementById("diverrP1").style.display = "none";
+                                          document.getElementById("btn-fin-stp1").disabled = false;
+
+                                        } else {
+                                          document.getElementById("diverrP1").style.display = "block";
+                                          document.getElementById("divmsjerrP1").innerHTML = 'El campo de Fecha Apagado debe ser sueprior a la Fehca Iniciada';
+                                          document.getElementById("btn-fin-stp1").disabled = true;
+
+                                        }
+                                        $('#dtp-fec-apg').datepicker('hide');
+                                    });
+                                </script>
+                                <br>
+                            </div>
+                            <div class="col-sm-3">
+                                <label>Hora Apagada</label>
+                                <div class="form-group">
+                                    <div class='input-group date' id='datetimepicker3'>
+                                        {{formSal.hora_apagado}}
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <script type="text/javascript">
+                                    $(function() {
+                                        $('#datetimepicker3').datetimepicker({
+                                            format: 'LT'
+                                        });
+
+                                    });
+                                </script>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="col-sm-12">
+                            <hr>
+                            <label><ins>Por Favor seleccione los Honeros participantes de esta quema: </ins></label>
+
+                            <table id="grid-keep-selection" class="table table-condensed table-hover table-striped table w3-table-all w3-card-4">
+                                <thead>
+                                    <tr>
+                                        <th data-column-id="id" data-type="numeric" data-identifier="true">ID</th>
+                                        <th data-column-id="nom">Nombre</th>
+                                        <th data-column-id="ape">Apellido</th>
+                                        <th data-column-id="car">Cargo</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {% for registro in lista_hor %}
+                                    <form id="frmHornero" action="" method="post" class="form-horizontal">
+                                        <tr>
+                                            <td>
+                                                {{ registro.id}}
+                                            </td>
+                                            <td>
+                                                {{ registro.nombre_empleado}}
+                                            </td>
+                                            <td>
+                                                {{ registro.apellido_empleado}}
+                                            </td>
+                                            <td>
+                                                {{ registro.id_cargo}}
+                                            </td>
+                                        </tr>
+                                    </form>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+
+                        </div>
+
+                        <ul class="list-inline pull-right">
+
+                            <li><button type="button" id="btn-fin-stp1" class="btn btn-primary next-step">Siguiente</button>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- STEP2 EGRESO DE PRODUCTOS -->
+                    <div class="tab-pane" role="tabpanel" id="step2">
+
+                        <div class="col-sm-12">
+
+                            <div class="col-md-offset-1 alert alert-danger fade in row" style="display:none;" id="diverrP2">
+                                <strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Datos Nulos o Invalidos!</strong> <br>
+                                <p id="divmsjerrP2"></p>
+                            </div>
+
+                        </div>
+
+                        <div class="col-sm-12">
+                            <center>
+                                <h3><b>Productos Ingresados al Horno</b></h3>
+                            </center>
+
+                            <hr>
+                            <table class="table w3-table-all w3-card-4 table-striped">
+                                <thead>
+                                    <tr>
+                                        <th data-column-id="nom">Producto</th>
+                                        <th data-column-id="canver" data-formatter="canpri" data-type="numeric">Verde</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {% for producto_verde in lista_prod %}
+                                    <tr>
+                                        <td>
+                                            {{ producto_verde.id_producto}}
+                                            <input type="number" name="ids_pro_ver" value="{{ producto_verde.id_producto}}" hidden>
+
+                                        </td>
+                                        <td>
+                                            {{ producto_verde.cantidad_verde}}
+                                            <input type="number" name="can_pro_ver" value="{{ producto_verde.cantidad_verde}}" hidden>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            <hr>
+                            <center>
+                                <h3><b>Egreso de Productos</b></h3>
+                            </center>
+
+                            <hr>
+                            <table id="grid-basic" class="table w3-table-all w3-card-4 table-striped">
+                                <thead>
+                                    <tr>
+                                        <th data-column-id="id" data-type="numeric" data-identifier="true">ID</th>
+                                        <th data-column-id="nom">Producto</th>
+                                        <th data-column-id="canpri" data-formatter="canpri" data-type="numeric">Primera</th>
+                                        <th data-column-id="canseg" data-formatter="canseg" data-type="numeric">Segunda</th>
+                                        <th data-column-id="cancru" data-formatter="cancru" data-type="numeric">Crudos</th>
+
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    {% for registro in lista_prod %}
+                                    <tr>
+                                        <td>
+                                            {{ registro.id}}
+                                            <input type="number" name="ids_pro" value="{{ registro.id}}" style="width: 50%;" hidden>
+
+                                        </td>
+                                        <td>
+                                            {{ registro.id_producto}}
+                                        </td>
+                                        <td>
+                                            <input id="txtcanpri" type="number" name="can_pro" value="{{ registro.cantidad_primera}}" style="width: 50%;" required pattern="[0-9]">
+                                        </td>
+
+                                        <td>
+                                            <input id="txtcanseg" type="number" name="can_pro" value="{{ registro.cantidad_segunda}}" style="width: 50%;" required pattern="[0-9]">
+                                        </td>
+                                        <td>
+                                            <input id="txtcancru" type="number" name="can_pro" value="{{ registro.cantidad_crudo }}" style="width: 50%;" required pattern="[0-9]">
+                                        </td>
+
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            <ul class="list-inline pull-right">
+                                <li><button type="button" class="btn btn-default prev-step">Atras</button></li>
+                                <li><button type="button" id="btn-fin-stp2" class="btn btn-primary next-step">Siguiente</button>
+                                </li>
+                            </ul>
+
+                        </div>
+
+
+                    </div>
+
+                    <!-- STEP3 COMBUSTIBLES -->
+                    <div class="tab-pane" role="tabpanel" id="step3">
+                        <div class="col-sm-12">
+
+                            <div class="col-md-offset-1 alert alert-danger fade in row" style="display:none;" id="diverrP3">
+                                <strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Datos Nulos o Invalidos!</strong> <br>
+                                <p id="divmsjerrP3">ASDFASD</p>
+                            </div>
+
+                        </div>
+                        <div class="col-sm-12">
+                            <center>
+                                <h3><b>Combustibles Usados</b></h3>
+                            </center>
+                            <hr>
+
+                        </div>
+
+                        <!-- Tabla de Combustible Disponibles en inventario -->
+                        <div class="col-sm-3">
+                            <h4><b>Combustibles Disponibles</b></h4>
+                            <hr>
+                            <table class="table table-striped" id="tbl-com-ver">
+                                <thead>
+                                    <th>Combustible</th>
+                                    <th>
+                                        Disponible
+                                    </th>
+                                </thead>
+                                <tbody>
+                                    {% for registro in lista_com%}
+                                    <tr>
+                                        <td>{{ registro.nombre_combustible}}</td>
+                                        <td>{{ registro.cantidad_total_combustible}} {{ registro.unidad_combustible}}</td>
+                                    </tr>
+                                    <input type="number" id="can-{{ registro.id}}" value="{{ registro.cantidad_total_combustible}}" hidden> {% endfor %}
+
+                                </tbody>
+                            </table>
+
+                        </div>
+
+
+                        <div class="col-sm-5">
+                            <h4><b>Combustible y Cantidad Usada</b></h4>
+                            <hr> {% crispy formCom %}
+                            <hr>
+
+                            <ul class="list-inline pull-right">
+                                <li><button type="button" class="btn btn-default prev-step">Atras</button></li>
+                                <li>
+                                    <a id="btn-agr-com" class="btn btn-warning" role="button"><span class="glyphicon glyphicon-plus-sign"></span>  Agregar Combustible</a>
+                                </li>
+                                <li>
+                                    <input id='btn-fin' type="submit" class="btn btn-primary" value="Finalizar" style="display:none" /></li>
+
+                            </ul>
+                        </div>
+
+
+                        <!-- Tabla de Combustibles que se van Agregando -->
+                        <div class="col-sm-4">
+                            <div id="divTbl" style="display: none">
+                                <h4><b>Combustibles agregados a la Quema</b></h4>
+                                <hr>
+
+
+
+
+                                <table class="table w3-table-all w3-card-4 table-striped" id="tbl-com">
+                                    <thead>
+                                        <tr>
+                                            <th>Combustible</th>
+                                            <th>Cantidad</th>
+                                            <th>
+                                                <center>
+                                                    Acciones
+                                                </center>
+                                            </th>
+                                            <th style="display:none;">id</th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div class="tab-pane" role="tabpanel" id="complete">
+                        <center>
+                            <h3><b>No te Apresures ve paso a Paso!!</b></h3>
+                        </center>
+
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </section>
+
+</div>
+{% endif %} {% endblock %}
+{% block files_food %}
+<script type="text/javascript" src="{% static 'js/fin_quema.js'%}"></script>
+{% endblock %}

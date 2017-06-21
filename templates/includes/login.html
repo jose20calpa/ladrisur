@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+  {% load static %}
+	<!-- Icono Pestaña Ladrisur -->
+	<link rel="shortcut icon" type="image/png" href="{% static 'images/icono.png' %}">
+  <link rel='stylesheet' href="{% static 'css/bootstrap.css' %}">
+  <link rel='stylesheet' href="{% static 'css/login.css' %}">
+  <script type="text/javascript" src="{% static 'js/jquery-3.1.1.js'%}"></script>
+  <script type="text/javascript" src="{% static 'js/bootstrap.min.js'%}"></script>
+
+
+
+</head>
+<body background="{% static 'images/fondo.jpg' %}">
+<div class="login-page">
+  <div class="form col-sm-12">
+    <form class="login-form col-sm-12" method="post">
+      {% csrf_token %}
+    <input type="text" id="username" name = "username"class="form-control" placeholder="Usuario" required autofocus>
+      <input type="password" id="password" name="password"class="form-control" placeholder="Contraseña" required>
+      <button type="submit" ><span>login</span></button>
+      {% if form.errors %}
+
+                <div class="alert alert-dismissible">
+                      <p class="message" style="color: #e84c3d;">Lo sentimos el usuario o la contraseña no coinciden</p>
+                </div>
+        {% endif %}
+      <p class="message">¿No esta registrado? <a href="#">Contactanos</a></p>
+    </form>
+  </div>
+</div>
+</body>
+</html>

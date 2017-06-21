@@ -1,0 +1,119 @@
+{% extends "includes/base.html" %}
+{% block files_head %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+{% include "includes/files_tables.html" %}
+{% endblock %}
+{% block content %}
+{% if user.groups.all.0.name == "Administrador" or user.groups.all.0.name == "Auxiliar Ejecutivo" %}
+<center>
+    <h2>Administrador de Empleados</h2>
+    <hr>
+</center>
+{% if lista %}
+<a class="btn btn-primary" href="{% url 'administrador:cre-emp'%}">
+    <span class="glyphicon glyphicon-pencil"></span>Agregar empleado
+</a>
+<div class="row ">
+    <div class="table-responsive">
+        <table id="grid-basic" class="table w3-table-all w3-card-4">
+            <thead class="thead-inverse">
+                <th style="display:none" id="id-row" data-column-id="id" data-type="numeric" style="display: none;">ID</th>
+                <th data-column-id="ced">Cedula</th>
+                <th data-column-id="nom">Nombres</th>
+                <th data-column-id="ape">Apellidos</th>
+                <th data-column-id="car">Cargo</th>
+                <th data-column-id="tel">Telefono</th>
+                <th data-column-id="dir">Dirección</th>
+                <th data-column-id="cor">Correo</th>
+                <th data-column-id="commands" data-formatter="commands" data-sortable="false">Acciones</th>
+            </thead>
+            <tbody>
+                {% for empleado in lista %}
+                <form action="" method="post" class="form-horizontal">
+                    <tr>
+                        <td>
+                            {{ empleado.id}}
+                        </td>
+                        <td>
+                            {{ empleado.cedula_empleado}}
+                        </td>
+                        <td>
+                            {{ empleado.nombre_empleado}}
+                        </td>
+                        <td>
+                            {{ empleado.apellido_empleado}}
+                        </td>
+                        <td>
+                            {{ empleado.id_cargo}}
+                        </td>
+                        <td>
+                            {{ empleado.telefono_empleado}}
+                        </td>
+                        <td>
+                            {{ empleado.direccion_empleado}}
+                        </td>
+                        <td>
+                            {{ empleado.correo_empleado}}
+                        </td>
+
+                        <td>
+                            <center>
+                                <a class="btn btn-danger" href="{% url 'administrador:elm-emp' empleado.id %}">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </a>
+
+                                <a class="btn btn-warning" href="{% url 'administrador:mod-emp' empleado.id %}">
+                                    <span class="glyphicon glyphicon-edit"></span>
+                                </a>
+                            </center>
+                        </td>
+                    </tr>
+                </form>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% else %}
+<div class="alert alert-info col-md-offset-1 col-md-8" role="alert">No hay registros de Empeleados disponibles
+    <a class="btn btn-primary" href="{% url 'administrador:cre-emp'%}">
+        <span class="glyphicon glyphicon-pencil"></span>Agregar Empeleado
+    </a>
+</div>
+{% endif %}
+<script>
+    $(document).ready(function() {
+
+        var grid = $("#grid-basic").bootgrid({
+            formatters: {
+                "commands": function(column, row) {
+                    return "<center>" +
+                        "<button  onclick=\"document.getElementById('delete').style.display='block'\" class=\"btn btn-xs btn-danger command-delete\" data-row-id=\"" + row.id +
+                        "\"><span class=\"glyphicon glyphicon-trash\"></span></button> " +
+                        "<button  class=\"btn btn-xs btn-warning command-edit\" data-row-id=\"" + row.id + "\"><span class=\"glyphicon glyphicon-edit\"></span></button>" +
+                        "</center>";
+                }
+            }
+        }).on("loaded.rs.jquery.bootgrid", function() {
+            /* Executes after data is loaded and rendered */
+            grid.find(".command-edit").on("click", function(e) {
+                var idproducto = $(this).data("row-id");
+                var url = "{% url 'administrador:mod-emp' 0 %}".replace(0, idproducto);
+                location.href = url;
+            }).end().find(".command-delete").on("click", function(e) {
+                var idproducto = $(this).data("row-id");
+                var url = "{% url 'administrador:elm-emp' 0 %}".replace(0, idproducto);
+                location.href = url;
+            });
+        });
+    });
+</script>
+{% else %}
+{% include "includes/error_atuenticacion.html" %}
+{% endif %}
+{# <script type="text/javascript" src="{% static 'js/mi_codigo_tablas.js' %}"></script> #}
+{% endblock%}
+{% block files_food %}
+
+{% endblock %}

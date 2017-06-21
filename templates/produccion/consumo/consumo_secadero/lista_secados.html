@@ -1,0 +1,110 @@
+{% extends "includes/base.html" %}
+{% block files_head %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+{% include "includes/files_tables.html" %}
+{% endblock %}
+{% block content %}
+<center>
+    <h2>Consumo de Secaderos</h2>
+    <hr>
+</center>
+{% if msjdetalle or msjres%}
+<div class="alert alert-success alert-dismissible" role="alert">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <strong><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> </strong>{{msj}}{{msjres}}{{msjdetalle}}!
+
+</div>
+
+{% endif %}
+{% if Lista_secados %}
+<div class="row">
+    <a class="btn btn-primary" href="{% url 'produccion:cre-con-sec'%}">
+        <span class="glyphicon glyphicon-pencil"></span>Registrar Consumo de Secadero
+    </a>
+</div>
+<div class="row col-md-offset-1 col-md-10">
+    <div class="table-responsive">
+        <table id="grid-basic" class="table w3-table-all w3-card-4">
+            <thead class="thead-inverse">
+                <th id="id-row" data-column-id="id" data-type="numeric">ID</th>
+                <th data-column-id="fec" >Fecha</th>
+                <th data-column-id="maq">Secadero</th>
+                <th data-column-id="commands" data-formatter="commands" data-sortable="false">Acciones</th>
+              </thead>
+              <tbody>
+                    {% for registro in Lista_secados %}
+                    <form action="" method="post" class="form-horizontal">
+                        <tr>
+                          <td>
+                              {{ registro.id}}
+                          </td>
+                            <td>
+                                {{ registro.fecha_secado}}
+                            </td>
+                            <td>
+                                {{ registro.id_secadero}}
+                            </td>
+
+                            <td>
+                                <center>
+                                    <a class="btn btn-danger" href="#">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </a>
+                                    <a class="btn btn-warning" href="{% url 'produccion:mod-tan' registro.id %}">
+                                        <span class="glyphicon glyphicon-edit"></span>
+                                    </a>
+                                </center>
+                            </td>
+                        </tr>
+                    </form>
+                    {% endfor %}
+                </tbody>
+        </table>
+    </div>
+</div>
+{% else %}
+<div class="alert alert-info col-md-offset-1 col-md-8" role="alert">No hay registros de Consumo de Secaderos disponibles
+    <a class="btn btn-primary" href="{% url 'produccion:cre-con-sec'%}">
+        <span class="glyphicon glyphicon-pencil"></span>Registar Consumo de Secadero
+    </a>
+</div>
+{% endif %}
+
+<script>
+    $(document).ready(function() {
+
+
+        var grid = $("#grid-basic").bootgrid({
+            formatters: {
+                "commands": function(column, row) {
+                    return "<center>" +
+                        "<button  onclick=\"document.getElementById('delete').style.display='block'\" class=\"btn btn-xs btn-danger command-delete\" data-row-id=\"" + row.id +
+                        "\"><span class=\"glyphicon glyphicon-trash\"></span></button> " +
+                        "<button  class=\"btn btn-xs btn-warning command-edit\" data-row-id=\"" + row.id + "\"><span class=\"glyphicon glyphicon-edit\"></span></button> " +
+                        "<button  onclick=\"document.getElementById('delete').style.display='block'\" class=\"btn btn-xs btn-success command-detail\" data-row-id=\"" + row.id +
+                        "\"><span class=\"glyphicon glyphicon-list-alt\"></span></button> " +
+                        "</center>";
+                }
+            }
+        }).on("loaded.rs.jquery.bootgrid", function() {
+            /* Executes after data is loaded and rendered */
+            grid.find(".command-edit").on("click", function(e) {
+                var idproducto = $(this).data("row-id");
+                var url = "{% url 'produccion:mod-sec' 0 %}".replace(0, idproducto);
+                location.href = url;
+            }).end().find(".command-delete").on("click", function(e) {
+                var idproducto = $(this).data("row-id");
+                var url = "{% url 'produccion:elm-sec' 0 %}".replace(0, idproducto);
+                location.href = url;
+            }).end().find(".command-detail").on("click", function(e) {
+                var idproducto = $(this).data("row-id");
+                var url = "{% url 'produccion:det-fin-sec' 0 %}".replace(0, idproducto);
+                location.href = url;
+            });
+        });
+    });
+</script>
+{% endblock%}
+{% block files_food %}
+
+{% endblock %}

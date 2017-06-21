@@ -1,0 +1,91 @@
+{% extends "includes/base.html" %}
+{% block files_head %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+{% include "includes/files_tables.html" %}
+{% endblock %}
+{% block content %}
+{% if user.groups.all.0.name == "Administrador" or user.groups.all.0.name == "Auxiliar Ejecutivo" %}
+
+<center>
+    <h2>Administrador de Secaderos</h2>
+    <hr>
+</center>
+{% if lista %}
+<a class="btn btn-primary" href="{% url 'administrador:cre-sec'%}">
+    <span class="glyphicon glyphicon-pencil"></span>Agregar Secador
+</a>
+<div class="container-fluid">
+    <div class="table-responsive ">
+        <table id="grid-basic" class="table w3-table-all w3-card-4">
+            <thead class="thead-inverse">
+              <th id="id-row" data-column-id="id" data-type="numeric">ID</th>
+              <th data-column-id="name">Secadero</th>
+              <th data-column-id="commands" data-formatter="commands" data-sortable="false">Acciones</th>
+
+            </thead>
+            <tbody>
+              {% for secadero in lista %}
+              <tr>
+                  <td style="display:hidden;">
+                      {{ secadero.id}}
+                  </td>
+                  <td>
+                      {{ secadero.nombre_secadero}}
+                  </td>
+
+              </tr>
+              {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+{% else %}
+<div class="alert alert-info" role="alert">No hay registros de Secaderos disponibles
+    <a class="btn btn-primary" href="{% url 'administrador:cre-sec'%}">
+        <span class="glyphicon glyphicon-pencil"></span>Agregar Secadero
+    </a>
+</div>
+{% endif %}
+<script>
+    $(document).ready(function() {
+        var grid = $("#grid-basic").bootgrid({
+          labels: {
+              noResults: "No se hay Registros en el Sistema",
+              search: "Buscar",
+
+
+          },
+            formatters: {
+                "commands": function(column, row) {
+                    return "<center>" +
+                        "<button  class=\"btn btn-xs btn-danger command-delete\" data-row-id=\"" + row.id +
+                        "\"><span class=\"glyphicon glyphicon-trash\"></span></button> " +
+                        "<button  class=\"btn btn-xs btn-warning command-edit\" data-row-id=\"" + row.id + "\"><span class=\"glyphicon glyphicon-edit\"></span></button>" +
+                        "</center>";
+                }
+            }
+        }).on("loaded.rs.jquery.bootgrid", function() {
+            /* Executes after data is loaded and rendered */
+            grid.find(".command-edit").on("click", function(e) {
+                var idSecadero = $(this).data("row-id");
+                var url = "{% url 'administrador:mod-sec' 0 %}".replace(0, idSecadero);
+                location.href = url;
+            }).end().find(".command-delete").on("click", function(e) {
+                var idSecadero = $(this).data("row-id");
+                var url = "{% url 'administrador:elm-sec' 0 %}".replace(0, idSecadero);
+                location.href = url;
+            });
+        });
+
+    });
+
+</script>
+{% else %}
+{% include "includes/error_atuenticacion.html" %}
+{% endif %}
+{% endblock%}
+{% block files_food %}
+
+{% endblock %}

@@ -1,0 +1,112 @@
+{% extends "includes/base.html" %} {% load crispy_forms_tags %}{% load static %} {% block files_js_head %}
+<link rel='stylesheet' href="{% static 'css/bootstrap-datepicker.css' %}">
+<link rel='stylesheet' href="{% static 'css/bootstrap-datetimepicker.css' %}">
+<link rel='stylesheet' href="{% static 'css/estilo_wizard_fin_quema.css' %}">
+
+
+<script type="text/javascript" src="{% static 'js/bootstrap-datepicker.js'%}"></script>
+<script type="text/javascript" src="{% static 'js/fin_quema.js'%}"></script>
+
+{% endblock %} {% block content %}
+<center>
+    <h2>Fin de Quema</h2>
+    <hr>
+</center>
+{% if msj %}
+<div class="alert alert-info">
+    <strong>Lo sentimos no hay hornos disponibles</strong>
+</div>
+{% else %}
+<div class="row">
+    <section>
+        <div class="wizard">
+            <div class="wizard-inner">
+                <div class="connecting-line"></div>
+                <ul class="nav nav-tabs" role="tablist">
+
+                    <li role="presentation" class="disabled">
+                        <a href="#" data-toggle="tab" aria-controls="step1" role="tab" title="Fecha y Horneros">
+                            <span class="round-tab">
+                                <i class="fa fa-calendar-check-o" aria-hidden="true"></i>
+                            </span>
+                        </a>
+                    </li>
+
+                    <li role="presentation" class="disabled">
+                        <a href="#" data-toggle="tab" aria-controls="step2" role="tab" title="Productos Egresados">
+                            <span class="round-tab"><i class="fa fa-diamond"></i></span>
+                        </a>
+                    </li>
+
+                    <li role="presentation" class="disabled">
+                        <a href="#" data-toggle="tab" aria-controls="step3" role="tab" title="Combustibles">
+                            <span class="round-tab">
+                               <i class="glyphicon glyphicon-tint"></i>
+                           </span>
+                        </a>
+                    </li>
+
+                    <li role="presentation" class="active">
+                        <a href="#" data-toggle="tab" aria-controls="complete" role="tab" title="Finalizar">
+                            <span class="round-tab"><i class="glyphicon glyphicon-ok"></i></span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <form role="form" class="" action="" method="post">
+                {% csrf_token %}
+
+
+                <!-- STEP1 HORNEROS - FECHA HORA -->
+                <div class="tab-content">
+                    <div class="tab-pane" role="tabpanel" id="step1">
+                        <div class="col-sm-12">
+
+                            <div class="col-md-offset-1 alert alert-danger fade in row" style="display:none;" id="diverrP1">
+                                <strong><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span> Datos Nulos o Invalidos!</strong> <br>
+                                <p id="divmsjerrP1"></p>
+                            </div>
+
+                        </div>
+
+
+
+                    </div>
+
+                    <!-- STEP2 EGRESO DE PRODUCTOS -->
+                    <div class="tab-pane" role="tabpanel" id="step2">
+
+
+
+
+
+
+                    </div>
+
+                    <!-- STEP3 COMBUSTIBLES -->
+                    <div class="tab-pane" role="tabpanel" id="step3">
+
+
+
+                    </div>
+
+
+                    <div class="tab-pane active" role="tabpanel" id="complete">
+                        <div class="col-md-offset-4">
+                            <h3><b>{{msjres}}</b></h3>
+                            <p>{{msjdetalle}}</p>
+
+                            <a id="btnIncioQuema" href="{% url 'produccion:lis-quem' %}" class="btn btn-warning" role="button"><span class="glyphicon glyphicon-plus-sign"></span>  Terminar otra Quema</a>
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </section>
+
+</div>
+{% endif %} {% endblock %}

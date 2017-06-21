@@ -1,0 +1,19 @@
+{% extends "includes/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% if user.groups.all.0.name == "Administrador" or user.groups.all.0.name == "Auxiliar Ejecutivo" %}
+<br>
+<div class="col-sm-offset-2 col-sm-7 panel panel-default">
+
+    <form method="post">
+      <center><h3><b>Edición de Cliente</b></h3></center><hr>
+
+        {% csrf_token %} {% crispy form %}
+
+    </form>
+
+</div>
+{% else %}
+{% include "includes/error_atuenticacion.html" %}
+{% endif %}
+{%endblock%}

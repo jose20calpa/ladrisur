@@ -1,0 +1,210 @@
+<div class="navbar-default sidebar" role="navigation" style="background-color:#3d3d3d;">
+    <div class="sidebar-nav navbar-collapse">
+        <ul class="nav nav-mi" id="side-menu">
+            <li class="sidebar-search">
+                <div class="input-group custom-search-form">
+                    <input type="text" class="form-control" placeholder="Search...">
+                    <span class="input-group-btn">
+                    <button class="btn btn-default" type="button">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </span>
+                </div>
+                <!-- /input-group -->
+            </li>
+            {% if user.groups.all.0.name == "Administrador" or user.groups.all.0.name == "Auxiliar Ejecutivo" %}
+
+            <li>
+                <a class="a-men" href="#" class="a-men"><i class="fa fa-wrench fa-fw"></i> Administrador<span class="fa arrow"></span></a>
+                <ul class="nav nav-second-level nav-mi">
+                    {% if user.groups.all.0.name == "Administrador" %}
+                    <li>
+                        <a class="a-men" href="{%url 'administrador:lis-prod'%}" ><i class="fa fa-diamond" aria-hidden="true"></i> Productos</a>
+                    </li>
+                    {% endif %} {% if user.groups.all.0.name == "Administrador" or user.groups.all.0.name == "Auxiliar Ejecutivo" %}
+                    <li>
+                        <a class="a-men" href="{%url 'administrador:lis-prov'%}"><span class="glyphicon glyphicon-phone-alt"></span> Proveedores</a>
+                    </li>
+                    {% endif %} {% if user.groups.all.0.name == "Administrador" %}
+                    <li>
+                        <a class="a-men" href="{%url 'administrador:lis-car'%}"><i class="fa fa-id-card" aria-hidden="true"></i> Cargos</a>
+
+
+                    </li>
+                    {% endif %} {% if user.groups.all.0.name == "Administrador" or user.groups.all.0.name == "Auxiliar Ejecutivo" %}
+
+                    <li>
+                        <a class="a-men" href="{%url 'administrador:lis-emp'%}"><i class="fa fa-address-book" aria-hidden="true"></i> Empleados</a>
+
+                    </li>
+                    {% endif %} {% if user.groups.all.0.name == "Administrador" %}
+                    <li>
+                        <a class="a-men" href="{%url 'administrador:lis-usu'%}"><i class="fa fa-users" aria-hidden="true"></i> Usuarios</a>
+
+                    </li>
+
+                    <li>
+                        <a class="a-men" href="{%url 'administrador:lis-com'%}"><span class="glyphicon glyphicon-tint"></span> Combustibles</a>
+
+                    </li>
+
+                    <li>
+                        <a class="a-men" href="#"> <span class="glyphicon glyphicon-fire"></span> Hornos y Secaderos <span class="fa arrow"></span></a>
+                        <ul class="nav nav-mi nav-third-level">
+                            <li>
+                                <a class="a-men" href="{%url 'administrador:lis-hor'%}"><i class="fa fa-thermometer-full" aria-hidden="true"></i> Hornos</a>
+                            </li>
+                            <li>
+                                <a class="a-men" href="{%url 'administrador:lis-sec'%}"><i class="fa fa-thermometer-empty" aria-hidden="true"></i> Secaderos</a>
+                            </li>
+
+                        </ul>
+                        <!-- /.nav-third-level -->
+                    </li>
+                    {% endif %} {% if user.groups.all.0.name == "Administrador" or user.groups.all.0.name == "Auxiliar Ejecutivo" %}
+
+
+
+                    <li>
+                        <a class="a-men" href="#"> <i class="fa fa-truck" aria-hidden="true"></i> Maquinaria y Vehiculos <span class="fa arrow"></span></a>
+                        <ul class="nav nav-mi nav-third-level">
+                            <li>
+                                <a class="a-men" href="{%url 'administrador:lis-maq'%}"><i class="fa fa-thermometer-full" aria-hidden="true"></i> Maquinas</a>
+                            </li>
+                            <li>
+                                <a class="a-men" href="{%url 'administrador:lis-veh'%}"><i class="fa fa-truck" aria-hidden="true"></i> Vehiculos</a>
+                            </li>
+
+                        </ul>
+                        <!-- /.nav-third-level -->
+                    </li>
+                    {% endif %}
+
+
+
+                </ul>
+                <!-- /.nav-second-level -->
+            </li>
+            {% endif %}
+
+
+
+            <li>
+                <a class="a-men" href="#"><i class="fa fa-cubes" aria-hidden="true"></i> Planta de Producción<span class="fa arrow"></span></a>
+                <ul class="nav nav-mi nav-second-level">
+                    <li>
+                        <a class="a-men" href="{% url 'produccion:lis-preprod'%}"><i class="fa fa-tree" aria-hidden="true"></i> Produccion Verde</a>
+                    </li>
+
+                    <!-- PRODUCCION 2-->
+                    <li>
+                        <a class="a-men" href="buttons.html"><i class="fa fa-share" aria-hidden="true"></i> Producción<span class="fa arrow"></span></a>
+
+                        <ul class="nav nav-mi nav-third-level">
+                            <li>
+                                <a class="a-men" href="{% url 'produccion:cre-quem-wz' %}"><span class="glyphicon glyphicon-play-circle" aria-hidden="true"></span> Inicio de Quema</a>
+                            </li>
+                            <li>
+                                <a class="a-men" href="{% url 'produccion:lis-quem' %}"><span class="glyphicon glyphicon-off" aria-hidden="true"></span> Finalizacion de Quema</a>
+
+                            </li>
+                            <li>
+                                <a class="a-men" href="{% url 'produccion:lis-quem-fin' %}"><span class="glyphicon glyphicon-list" aria-hidden="true"></span> Quemas Terminadas</a>
+                            </li>
+
+                        </ul>
+                        <!-- /.nav-third-level -->
+                    </li>
+                    <!-- PRODUCCION 2 FIN-->
+
+                    <!-- CONSUMOS-->
+                    <li>
+                        <a class="a-men" href="buttons.html"><i class="glyphicon glyphicon-dashboard" aria-hidden="true"></i> Consumos<span class="fa arrow"></span></a>
+
+                        <ul class="nav nav-mi nav-third-level">
+                          <li>
+                              <a class="a-men" href="{% url 'produccion:lis-tan'%}"><span class="glyphicon glyphicon-dashboard" aria-hidden="true"></span> Tanqueo Maquinaria</a>
+                          </li>
+                            <li>
+                                <a class="a-men" href="{% url 'produccion:lis-sec'%}"><span class="glyphicon glyphicon-dashboard" aria-hidden="true"></span> Consumo Secaderos</a>
+                            </li>
+
+
+
+                        </ul>
+                        <!-- /.nav-third-level -->
+                    </li>
+                    <!-- FIN CONSUMOS-->
+
+
+
+                </ul>
+                <!-- /.nav-second-level -->
+            </li>
+
+
+            {% if user.groups.all.0.name == "Administrador" or user.groups.all.0.name == "Auxiliar Ejecutivo" %}
+            <li>
+                <a class="a-men" href="#"><i class="fa fa-archive fa-fw"></i> Inventario<span class="fa arrow"></span></a>
+                <ul class="nav nav-mi nav-second-level">
+                    <li>
+                        <a class="a-men" href="{% url 'inventario:inv-prod'%}"><i class="fa fa-diamond" aria-hidden="true"></i> Productos</a>
+                    </li>
+                    <li>
+                        <a class="a-men" href="{% url 'inventario:inv-com'%}"><span class="glyphicon glyphicon-tint"></span> Combustibles</a>
+                    </li>
+                </ul>
+                <!-- /.nav-second-level -->
+            </li>
+            <li>
+                <a class="a-men" href="buttons.html"><i class="fa fa-usd fa-fw" aria-hidden="true"></i> Ventas<span class="fa arrow"></span></a>
+                <ul class="nav nav-mi nav-second-level">
+                    <li>
+                        <a class="a-men" href="{% url 'ventas:lis-cli'%}"><i class="fa fa-handshake-o" aria-hidden="true"></i> Clientes</a>
+                    </li>
+                    <li>
+                      <a class="a-men"><i class="fa fa-money" aria-hidden="true"></i> Ventas</a><span class="fa arrow"></span></a>
+                    </li>
+
+                    <!-- VENDER-->
+                    <li>
+                        <a class="a-men"><i class="fa fa-shopping-basket" aria-hidden="true"></i> Vender<span class="fa arrow"></span></a>
+
+                        <ul class="nav nav-mi nav-third-level">
+                          <li>
+                              <a class="a-men" href="{% url 'ventas:cre-ven-obr'%}"><i class="fa fa-building" aria-hidden="true"></i> Venta en Obra</a>
+                          </li>
+                            <li>
+                                <a class="a-men" href="{% url 'ventas:cre-ven-pla'%}"><i class="fa fa-cubes" aria-hidden="true"></i> Venta en Planta</a>
+                            </li>
+                        </ul>
+                        <!-- /.nav-third-level -->
+                    </li>
+                    <!-- VENDER -->
+                </ul>
+                <!-- /.nav-second-level -->
+            </li>
+            {% if user.groups.all.0.name == "Administrador" %}
+
+            <li>
+                <a class="a-men" href="#"><i class="fa fa-pie-chart fa-fw"></i> Reportes<span class="fa arrow"></span></a>
+                <ul class="nav nav-mi nav-second-level">
+                    <li>
+                        <a class="a-men" href="blank.html">Reporte de Diario</a>
+                    </li>
+                    <li>
+                        <a class="a-men" href="login.html">Reporte Mes</a>
+                    </li>
+                    <li>
+                        <a class="a-men" href="login.html">Reporte Acumulado</a>
+                    </li>
+                </ul>
+                <!-- /.nav-second-level -->
+            </li>
+            {% endif %} {% endif %}
+
+        </ul>
+    </div>
+    <!-- /.sidebar-collapse -->
+</div>
+<!-- /.navbar-static-side -->

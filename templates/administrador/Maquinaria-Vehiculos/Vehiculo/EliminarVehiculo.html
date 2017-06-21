@@ -1,0 +1,29 @@
+{% extends "includes/base.html" %}
+{% block content %}
+{% if user.groups.all.0.name == "Administrador" or user.groups.all.0.name == "Auxiliar Ejecutivo" %}
+
+<center>
+    <h1><b>Eliminaras un Vehiculo</b></h1>
+    <hr>
+</center>
+
+<form method="post">
+    {% csrf_token %}
+    <div class="col-sm-12">
+          <h2>¿Desea Eliminar el vehiculo- {{object.marca_vehiculo}} {{object.modelo_vehiculo}} año {{object.año_vehiculo}}?</h2>
+        <hr>
+    </div>
+
+    <div class="col-sm-offset-2 col-sm-8">
+        <center>
+            <input type="submit" class="btn btn-danger" name="Eliminar" value="Eliminar">
+            <a class="btn btn-success" href="{% url 'administrador:lis-veh' %}"> Cancelar</a>
+        </center>
+    </div>
+
+</form>
+<br>
+{% else %}
+{% include "includes/error_atuenticacion.html" %}
+{% endif %}
+{% endblock %}

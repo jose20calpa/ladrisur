@@ -1,0 +1,55 @@
+<!--ADMINISTRADOR-->
+<div class="panel-heading" style="background-color:#0c9a81; color: white;">
+    <h4 class="panel-title">
+      <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne"><span class="glyphicon glyphicon-cog">
+      </span> Administrador</a>
+    </h4>
+</div>
+{% if actv == '1'%}
+<div id="collapseOne" class="panel-collapse collapse in">
+    {%else%}
+    <div id="collapseOne" class="panel-collapse collapse">
+        {%endif%}
+        <div class="panel-body">
+            <table class="table">
+                <tr>
+                    <td>
+                        <span class="glyphicon glyphicon-pencil "></span><a href="{%url 'administrador:lis-prod'%}">Productos</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="glyphicon glyphicon-phone-alt"></span><a href="{%url 'administrador:lis-prov'%}"> Poveedores</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="glyphicon glyphicon-file"></span><a href="{%url 'administrador:lis-car'%}">Cargos</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="glyphicon glyphicon-user"></span><a href="{%url 'administrador:lis-emp'%}">Empleados</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="glyphicon glyphicon-comment text-success"></span><a href="{%url 'administrador:lis-usu'%}">Usuarios</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="glyphicon glyphicon-tint"></span><a href="{%url 'administrador:lis-com'%}">Combustibles</a>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="glyphicon glyphicon-fire"></span><a href="{%url 'administrador:lis-hor'%}">Hornos</a>
+
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

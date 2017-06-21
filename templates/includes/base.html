@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>LadriSur - LadriSig</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/w3.css' %}">
+
+    <!-- Icono Pestaña Ladrisur -->
+    <link rel="shortcut icon" type="image/png" href="{% static 'images/icono.png' %}">
+
+    <!-- Bootstrap Core CSS -->
+    <!--<link rel='stylesheet' href="{% static 'css/bootstrap.css' %}">-->
+    <link rel='stylesheet' href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <!-- MetisMenu CSS -->
+    <link rel='stylesheet' href="{% static 'css/metisMenu.css' %}">
+
+    <!-- Custom CSS -->
+    <link rel='stylesheet' href="{% static 'css/sb-admin-2.css' %}">
+
+    <!-- Custom Fonts -->
+    <link rel='stylesheet' href="{% static 'fonts/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+
+    <!-- Nuestro Estilo -->
+    <link rel='stylesheet' href="{% static 'css/mi_estilo.css' %}">
+
+    {% block files_head %}{% endblock %}
+</head>
+
+<body>
+    <div id="wrapper">
+        <!-- Navigation -->
+        <nav class="navbar nav-mi navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0; background-color: #3d3d3d">
+            {% include "includes/navbar.html" %}
+            <!-- Panel de Navegacion Lateral-->
+            {% include "includes/panel-nav.html" %}
+        </nav>
+
+        <div id="page-wrapper">
+
+            <div class="container-fluid">
+
+
+                {% block content %}{% endblock %}
+
+            </div>
+        </div>
+
+    </div>
+    <!-- /#wrapper -->
+    {% block files_food %}
+    <!-- jQuery -->
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>-->
+    <script type="text/javascript" src="{% static 'js/jquery.min.js'%}"></script>
+
+    {% endblock %}
+
+
+   <!-- Bootstrap Core JavaScript -->
+   <script type="text/javascript" src="{% static 'js/bootstrap.js'%}"></script>
+
+   <!-- Metis Menu Plugin JavaScript -->
+   <script type="text/javascript" src="{% static 'js/metisMenu.js'%}"></script>
+   <!-- Morris Charts JavaScript -->
+   <!--<script src="../vendor/raphael/raphael.min.js"></script>
+   <script src="../vendor/morrisjs/morris.min.js"></script>
+   <script src="../data/morris-data.js"></script>-->
+
+   <!-- Custom Theme JavaScript -->
+   <script type="text/javascript" src="{% static 'dist/js/sb-admin-2.js'%}"></script>
+
+
+
+
+<!------------------------------------------------------------------------>
+
+
+</body>
+
+</html>

@@ -1,0 +1,114 @@
+{% extends "includes/base.html" %}
+{% block files_head %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+{% include "includes/files_tables.html" %}
+{% endblock %}
+{% block content %}
+<center>
+    <h2>Finalización de Quemas</h2>
+    <hr>
+</center>
+{% if lista %}
+<a class="btn btn-primary" href="{% url 'produccion:cre-quem-wz'%}">
+    <span class="glyphicon glyphicon-pencil"></span>Agregar una Inicio de Quema
+</a>
+{% if messages %} {% for message in messages %}
+<div class="alert alert-info {% if message.tags %}alert-{{ message.tags }}" {% endif %}>
+    {{ message }}
+    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+</div>
+{% endfor %} {% endif %}
+<div class="container-fluid">
+  <h3><i><ins>Lista de quemas Iniciadas</ins></i></h3>
+    <div class="table-responsive">
+        <table id="grid-basic" class="table w3-table-all w3-card-4">
+            <thead class="thead-inverse">
+                <th id="id-row" data-column-id="id" data-type="numeric">ID</th>
+                <th data-column-id="fec">Fecha de Inicio</th>
+                <th data-column-id="hora">Hora</th>
+                <th data-column-id="hor">Horno Activo</th>
+                <th data-column-id="commands" data-formatter="commands" data-sortable="false">Acciones</th>
+
+            </thead>
+            <tbody>
+                {% for registro in lista %}
+                <tr>
+                    <td >
+                        {{registro.cod}}
+                    </td>
+                    <td>
+                        {{registro.fecha_encendido}}
+                    </td>
+                    <td>
+                        {{registro.hora_encendido}}
+                    </td>
+                    <td>
+                        {{registro.nombre_horno}}
+                    </td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+{% else %}
+<div class="alert alert-info col-md-offset-1 col-md-8" role="alert">No hay registros de Quemas disponibles
+    <a class="btn btn-primary" href="{% url 'produccion:cre-quem-wz'%}">
+        <span class="glyphicon glyphicon-pencil"></span>Agregar Registro de Quema
+    </a>
+</div>
+{% endif %}
+<script>
+    $(document).ready(function() {
+
+
+        var grid = $("#grid-basic").bootgrid({
+          labels: {
+              noResults: "No se hay Registros en el Sistema",
+              search: "Buscar",
+
+
+          },
+            formatters: {
+                "commands": function(column, row) {
+                    return "<center>" +
+                        "<button  class=\"btn btn-xs btn-danger command-finish\" data-row-id=\"" + row.id +
+                        "\"><span class=\"glyphicon glyphicon-off\"></span></button> " +
+                        "<button  class=\"btn btn-xs btn-success command-detail\" data-row-id=\"" + row.id +
+                        "\"><span class=\"glyphicon glyphicon-list-alt\"></span></button> " +
+                        "<button  class=\"btn btn-xs btn-warning command-edit\" data-row-id=\"" + row.id +
+                        "\"><span class=\"glyphicon glyphicon-edit\"></span></button> " +
+                        "<button  class=\"btn btn-xs btn-danger command-delete\" data-row-id=\"" + row.id +
+                        "\"><span class=\"glyphicon glyphicon-trash\"></span></button> " +
+                        "</center>";
+                }
+            }
+        }).on("loaded.rs.jquery.bootgrid", function() {
+            /* Executes after data is loaded and rendered */
+            grid.find(".command-finish").on("click", function(e) {
+                var idQuem = $(this).data("row-id");
+                var url = "{% url 'produccion:cre-fin-quem-wz' 0 %}".replace(0, idQuem);
+                location.href = url;
+            }).end().find(".command-detail").on("click", function(e) {
+              var idQuem = $(this).data("row-id");
+              var url = "{% url 'produccion:det-ini-quem' 0 %}".replace(0, idQuem);
+              location.href = url;
+            }).end().find(".command-edit").on("click", function(e) {
+              var idQuem = $(this).data("row-id");
+              var url = "{% url 'produccion:mod-ini-quem' 0 %}".replace(0, idQuem);
+              location.href = url;
+            }).end().find(".command-delete").on("click", function(e) {
+                var idQuem = $(this).data("row-id");
+                var url = "{% url 'produccion:elm-ini-quem' 0 %}".replace(0, idQuem);
+                location.href = url;
+            });
+        });
+
+    });
+</script>
+{% endblock%}
+{% block files_food %}
+
+{% endblock %}

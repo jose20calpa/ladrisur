@@ -1,0 +1,88 @@
+{% extends "includes/base.html" %}
+{% block files_head %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+{% include "includes/files_tables.html" %}
+{% endblock %}
+{% block content %}
+<center>
+    <h2>Lista de Quemas Finalizadas</h2>
+    <hr>
+</center>
+{% if lista %}
+<div class="container-fluid">
+    <div class="table-responsive">
+        <table id="grid-basic" class="table w3-table-all w3-card-4">
+            <thead class="thead-inverse">
+                <th id="id-row" data-column-id="id" data-type="numeric">ID</th>
+                <th data-column-id="fec-enc">Fecha Encendida</th>
+                <th data-column-id="hor-enc">Hora Encendida</th>
+                <th data-column-id="fec-apg">Fecha Apagada</th>
+                <th data-column-id="hor-apg">Hora Apagada</th>
+                <th data-column-id="commands" data-formatter="commands" data-sortable="false">Acciones</th>
+
+            </thead>
+            <tbody>
+                {% for quema in lista %}
+                <tr>
+                    <td >
+                        {{quema.cod}}
+                    </td>
+                    <td>
+                        {{quema.fecha_encendido}}
+                    </td>
+                    <td>
+                        {{quema.hora_encendido}}
+                    </td>
+                    <td>
+                        {{quema.fecha_apagado}}
+                    </td>
+                    <td>
+                        {{quema.hora_apagado}}
+                    </td>
+
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+
+
+
+{% endif %}
+<script>
+    $(document).ready(function() {
+
+
+        var grid = $("#grid-basic").bootgrid({
+          labels: {
+              noResults: "No se hay Registros en el Sistema",
+              search: "Buscar",
+
+
+          },
+            formatters: {
+                "commands": function(column, row) {
+                    return "<center>" +
+                        "<button  onclick=\"document.getElementById('delete').style.display='block'\" class=\"btn btn-xs btn-success command-delete\" data-row-id=\"" + row.id +
+                        "\"><span class=\"glyphicon glyphicon-list-alt\"></span></button> " +
+                        "</center>";
+                }
+            }
+        }).on("loaded.rs.jquery.bootgrid", function() {
+            /* Executes after data is loaded and rendered */
+            grid.find(".command-delete").on("click", function(e) {
+                var idQuem = $(this).data("row-id");
+                var url = "{% url 'produccion:det-fin-quem' 0 %}".replace(0, idQuem);
+                location.href = url;
+            }).end()
+        });
+
+    });
+</script>
+{% endblock%}
+{% block files_food %}
+
+{% endblock %}

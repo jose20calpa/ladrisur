@@ -1,0 +1,30 @@
+{% extends "includes/base.html" %}
+{% block content %}
+{% if user.groups.all.0.name == "Administrador" or user.groups.all.0.name == "Auxiliar Ejecutivo" %}
+<center>
+    <h1><b>Eliminaras un Combustible de un Secado</b></h1>
+    <hr>
+</center>
+{% if msj %}
+<div class="alert alert-danger">
+    {{ msj }}
+    <a class="btn btn-success" href="{% url 'produccion:lis-sec' %}"> Volver</a>
+
+</div>
+{% endif %}
+<div class="col-sm-offset-2 col-sm-7 panel panel-default" >
+    <form method="post">
+      <h2>¿Desea Eliminar <b>{{obj.cantidad_combustible}}</b> el Combustible del <b>{{object.id_combustible}}</b>?</h2>
+        {% csrf_token %}
+        <hr>
+        <center>
+          <input type="submit" class="btn btn-danger"name="Eliminar" value="Eliminar">
+          <a class="btn btn-success" href="{% url 'produccion:det-fin-sec' idsec%}"> Cancelar</a>
+        </center>
+    </form>
+    <br>
+</div>
+{% else %}
+{% include "includes/error_atuenticacion.html" %}
+{% endif %}
+{% endblock %}

@@ -1,0 +1,197 @@
+{% extends "includes/base.html" %} {% block content %}
+<center>
+    <h2>Detalles de la Quema Finalizada</h2>
+    <hr>
+</center>
+{% if horno and lista_prod and lista_comb and lista_emp and datos_quema %}
+
+{% for datos in  datos_quema %}
+<div class="alert alert-success" role="alert">La quema se inició el <b>{{datos.fecha_encendido}}</b> a las <b>{{datos.hora_encendido}}</b> y terminó el <b>{{datos.fecha_apagado}}</b> a las
+<b>{{datos.hora_apagado}}</b> en el Horno: <b>{{horno}} </b>
+<a class="btn btn-success btn-xs col-xs-offset-7 col-md-offset-2" href="{% url 'produccion:lis-quem-fin'%}">
+    <span class="glyphicon glyphicon-chevron-left"></span> Volver
+</a>
+</div>
+
+<!--
+<table>
+  <tbody>
+    <tr>
+      <td>
+        <div class="form-group">
+        <label for="">Fecha de Incio:</label><input class="form-control" type="text" value="{{datos.fecha_encendido}}" disabled>
+        </div>
+      </td>
+      <td>
+        <div class="form-group col-xs-offset-1">
+
+        <label for="">Hora de Incio:</label>
+        <input class="form-control" type="text" value="{{datos.hora_encendido}}" disabled>
+      </td>
+
+      <td>
+        <div class="form-group col-xs-offset-1">
+        <label for="">Fecha de Finalización:</label>
+      <input class="form-control" type="text" value="{{datos.fecha_apagado}}" disabled>
+    </div>
+        </td>
+      <td>
+        <div class="form-group col-xs-offset-1">
+        <label for="">Hora de Finalización:</label>
+      <input class="form-control" type="text" value="{{datos.hora_apagado}}" disabled>
+    </div>
+
+    </td>
+    <td>
+      <div class="form-group col-xs-offset-1">
+      <label for="">Horno:</label>
+    <input class="form-control" type="text" value="{{horno}}" disabled>
+  </div>
+
+  </td>
+    </tr>
+
+  </tbody>
+</table>
+-->
+<!--
+<div class="form-group form-inline">
+  <label for="">Fecha de Incio:</label>
+  <input class="form-control" type="text" value="{{datos.fecha_encendido}}" disabled>
+  <label for="">Hora de Incio:</label>
+  <input class="form-control" type="text" value="{{datos.hora_encendido}}" disabled>
+
+
+</div>
+<div class="form-group form-inline">
+  <label for="">Fecha de Finalización:</label>
+  <input class="form-control" type="text" value="{{datos.fecha_apagado}}" disabled>
+  <label for="">Hora de Finalización:</label>
+  <input class="form-control" type="text" value="{{datos.hora_apagado}}" disabled>
+</div>
+-->
+
+
+
+
+
+{% endfor %}
+<div class="container-fluid">
+    <div class="table-responsive">
+      <h3><b>PRODUCTOS</b></h3>
+        <table class="table w3-table-all w3-card-4">
+            <thead class="thead-inverse">
+                <th data-column-id="fec-enc">Producto</th>
+                <th data-column-id="hor-enc">Cantidad Primera</th>
+                <th data-column-id="fec-apg">Cantidad Segunda</th>
+                <th data-column-id="hor-apg">Cantidad Crudos</th>
+                <th data-column-id="hor-apg">Cantidad Dañados</th>
+
+            </thead>
+            <tbody>
+                {% for producto in lista_prod %}
+                <tr>
+                  <td >
+                      {{producto.id_producto}}
+                  </td>
+                    <td >
+                        {{producto.cantidad_primera}}
+                    </td>
+                    <td>
+                        {{producto.cantidad_segunda}}
+                    </td>
+                    <td>
+                        {{producto.cantidad_crudo}}
+                    </td>
+                    <td>
+                        {{producto.cantidad_dañados}}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<div class="col-md-12">
+  <div class="col-md-6">
+    <!--TABLA COMBUSTIBLES-->
+
+    <div class="container-fluid">
+        <div class="table-responsive">
+          <h3><b>COMBUSTIBLES</b></h3>
+            <table class="table w3-table-all w3-card-4">
+                <thead class="thead-inverse">
+                    <th data-column-id="fec-enc">Combustble</th>
+                    <th data-column-id="hor-enc">Cantidad Usada</th>
+
+
+                </thead>
+                <tbody>
+                    {% for combustble in lista_comb %}
+                    <tr>
+                        <td >
+                            {{combustble.id_combustible}}
+                        </td>
+                        <td>
+                            {{combustble.cantidad_combustible}}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+  </div>
+
+
+  </div>
+
+  <!--TABLA EMPLEADOS-->
+  <div class="col-md-6">
+    <div class="container-fluid">
+        <div class="table-responsive">
+          <h3><b>EMPLEADOS</b></h3>
+            <table  class="table w3-table-all w3-card-4">
+                <thead class="thead-inverse">
+                    <th data-column-id="fec-enc">Identificación</th>
+                    <th data-column-id="hor-enc">Empleado</th>
+
+
+                </thead>
+                <tbody>
+                    {% for empleado in lista_emp %}
+                    <tr>
+                      <td>
+                          {{empleado.cedula_empleado}}
+                      </td>
+                        <td>
+                          {{empleado.nombre_empleado}} {{empleado.apellido_empleado}}
+                        </td>
+
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+  </div>
+
+
+
+</div>
+
+{% else %}
+<h1>no hay</h1>
+{% endif %}
+
+
+
+
+
+
+{% endblock%}

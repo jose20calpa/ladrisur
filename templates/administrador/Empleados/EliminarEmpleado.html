@@ -1,0 +1,25 @@
+{% extends "includes/base.html" %}
+{% block content %}
+{% if user.groups.all.0.name == "Administrador" or user.groups.all.0.name == "Auxiliar Ejecutivo" %}
+<center>
+    <h1><b>Eliminaras un Empleado</b></h1>
+    <hr>
+</center>
+
+<div class="col-sm-offset-2 col-sm-5">
+    <form method="post">
+      <h2>¿Desea Eliminar el Cargo {{object.nombre_empleado}} ?</h2>
+        {% csrf_token %}
+        <hr>
+        <center>
+          <input type="submit" class="btn btn-danger"name="Eliminar" value="Eliminar">
+          <a class="btn btn-success" href="{% url 'administrador:lis-emp' %}"> Cancelar</a>
+        </center>
+    </form>
+    <br>
+</div>
+{% else %}
+{% include "includes/error_atuenticacion.html" %}
+{% endif %}
+
+{% endblock %}

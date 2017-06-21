@@ -1,0 +1,90 @@
+{% extends "includes/base.html" %}
+{% load static %}
+{% block files_head %}
+{% include "includes/files_datepicker.html" %}
+{% endblock %}
+{% block content %}
+<center>
+    <h2>Modificar la Quema</h2>
+    <hr>
+</center>
+{% if msj %}
+<div class="alert alert-danger alert-dismissible" role="alert">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+  <strong>{{msj}}).</strong>
+</div>
+{% endif %}
+
+<div class="col-md-offset-3 col-sm-5 panel panel-default w3-card-4">
+<br>
+    <form role="form"  method="post">
+      {% csrf_token %}<div class="col-sm-6">
+        <label>Fecha de Encendido</label>
+        <div class="input-group date" data-provide="datepicker" data-date-format="yyyy-mm-dd" data-date-today-highlight="true">
+          {{form2.fecha_encendido}}
+          <div class="input-group-addon">
+            <span class="glyphicon glyphicon-th"></span>
+          </div>
+        </div>
+        <script type="text/javascript">
+          $('.datepicker').datepicker({todayHighlight: true,});
+        </script>
+        <br>
+      </div>
+      <div class="col-sm-6">
+        <label>Hora de Encendido</label>
+        <div class="form-group">
+          <div class='input-group date' id='datetimepicker3'>
+            {{form2.hora_encendido}}
+            <span class="input-group-addon"><span class="glyphicon glyphicon-time"></span>
+            </span>
+          </div>
+        </div>
+
+        <script type="text/javascript">
+            $('#datetimepicker3').datetimepicker({
+              format: 'LT'
+            });
+
+        </script>
+      </div>
+
+      <div class="col-sm-12">
+        {{form}}
+      </div>
+      <div class="col-sm-12">
+        <hr>
+      </div>
+      <ul class="list-inline pull-right">
+          <li>
+            <a id="btn-can" class="btn btn-danger" href="{% url 'produccion:lis-quem'%}">
+              <b>Cancelar</b>
+              <span class="glyphicon glyphicon-remove-sign"></span>
+            </a>
+          </li>
+          <li>
+              <input id="btn-fin-mod" type="submit" class="btn btn-success" value="Modificar" /></li>
+          </li>
+      </ul>
+    </form>
+</div>
+<script type="text/javascript">
+$(document).ready(function() {
+//BOTON GUARDAR ajax
+var urlact = window.location;
+$("#btn-fin-mod").click(function() {
+  $.ajax({
+    type: 'POST',
+    url: urlact,
+    data: {
+      'fecha_encendido': fecha_encendido,
+      'hora_encendido': hora_encendido,
+      'id_horno': id_horno,
+      CSRF: getCSRFTokenValue()
+    },
+  });
+});
+});
+
+</script>
+{%endblock%}
